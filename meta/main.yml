@@ -1,0 +1,32 @@
+---
+# role metadata file
+galaxy_info:
+  author: Ahmad Wilson
+  role_name: systemd
+  description: Systemd, a system and service manager for Linux operating systems
+  company: "O1.IO"
+  license: license (Apache, BSD, MIT)
+  min_ansible_version: 2.6
+  platforms:
+    - name: EL
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+    - name: MacOSX
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+
+  galaxy_tags:
+    - systemd
+    - service
+    - manager
+    - linux
+    - units

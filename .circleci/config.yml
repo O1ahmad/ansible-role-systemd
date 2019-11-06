@@ -1,0 +1,22 @@
+---
+version: 2.1
+jobs:
+  build:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - run:
+          name: Set ruby version to 2.6.3
+          command: |
+            rvm install 2.6.3
+            echo . $(rvm 2.6.3 do rvm env --path) >> $BASH_ENV
+      - run:
+          name: Install latest version of bundler gem
+          command: gem install bundler
+      - run:
+          name: Install repo gem bundle
+          command: bundle install
+      - run:
+          name: List available functional tests
+          command: kitchen list

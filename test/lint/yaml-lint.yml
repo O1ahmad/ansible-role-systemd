@@ -1,0 +1,12 @@
+---
+# see for details: https://yamllint.readthedocs.io/en/stable/index.html
+extends: default
+ignore: |
+    .bundle
+    .git/
+    .kitchen/
+    vendor/
+rules:
+  line-length:
+    max: 120
+    level: warning
