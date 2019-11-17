@@ -1,0 +1,12 @@
+---
+- name: Copy unit configurations in place
+  template:
+    src: "systemd.unit.j2"
+    dest: "{{ item.value.path|default(unit_path) }}/{{ item.key }}.{{ item.value.type|default(unit_type) }}"
+    owner: "root"
+    group: "root"
+    mode: 0644
+    backup: true
+  vars:
+    config: "{{ item.value }}"
+  loop: "{{ unit_config|dict2items }}"

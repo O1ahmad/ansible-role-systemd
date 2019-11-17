@@ -1,0 +1,34 @@
+---
+- name: Default playbook for testing
+  hosts: test-kitchen
+  roles:
+    - ansible-role-systemd
+  vars:
+    unit_config:
+      test-service:
+        Unit:
+          Description: "This is a test service unit which runs sleep"
+        Service:
+          User: 'kitchen'
+          Group: 'kitchen'
+          ExecStart: '/usr/bin/sleep infinity'
+        Install:
+          WantedBy: 'multi-user.target'
+      test-socket:
+        type: "socket"
+        Unit:
+          Description: "This is a test socket unit which specifies the 'socket' unit type"
+        Socket:
+          ListenStream: '2411'
+        Install:
+          WantedBy: 'multi-user.target'
+      test-mount:
+        type: "mount"
+        path: "/run/systemd/system"
+        Unit:
+          Description: "This is a test mount unit which overrides the default unit path"
+        Mount:
+          What: '/dev/stdin'
+          Where: '/tmp/stdin'
+        Install:
+          WantedBy: 'multi-user.target'

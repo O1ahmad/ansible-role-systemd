@@ -1,4 +1,4 @@
-Ansible Role Systemd
+Ansible Role :vertical_traffic_light: Systemd
 =========
 [![Galaxy Role](*role-shield-link*)](--role-link--)
 [![Downloads](*downloads-shield-link*)](--role-link--)
