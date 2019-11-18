@@ -39,9 +39,6 @@ platforms:
   - name: fedora-28
     driver_config:
       <<: *default_driver_config
-  - name: fedora-29
-    driver_config:
-      <<: *default_driver_config
   - name: fedora-30
     driver_config:
       <<: *default_driver_config
@@ -96,9 +93,9 @@ platforms:
         - systemctl enable ssh.service
 
 suites:
-  - name: default
+  - name: unit_config
     provisioner:
-      playbook: test/integration/default/default_playbook.yml
+      playbook: test/integration/unit_config/default_playbook.yml
     verifier:
       inspec_tests:
-        - path: test/integration/default
+        - path: test/integration/unit_config

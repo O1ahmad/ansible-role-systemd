@@ -1,2 +1,4 @@
 ---
 # defaults variable file
+unit_path: "/etc/systemd/system"
+unit_type: "service"

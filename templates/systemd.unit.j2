@@ -1,0 +1,16 @@
+# see: Systemd Unit configuration logic -- http://man7.org/linux/man-pages/man5/systemd.unit.5.html
+
+[Unit]
+{% for key, value in config["Unit"].items() %}
+{{ key }}={{ value }}
+{% endfor %}
+
+[{{ config.type|default(unit_type)|title }}]
+{% for key, value in config[config.type|default(unit_type)|title].items() %}
+{{ key }}={{ value }}
+{% endfor %}
+
+[Install]
+{% for key, value in config["Install"].items() %}
+{{ key }}={{ value }}
+{% endfor %}
