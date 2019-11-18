@@ -1,12 +1,23 @@
 ---
+- name: set unit attributes
+  set_fact:
+    unit_path: "{{ unit.value.path|default(default_unit_path) }}"
+    unit_type: "{{ unit.value.type|default(default_unit_type) }}"
+
+- name: Check if unit configuration exists.
+  stat:
+    path: "{{ unit_path }}/{{ unit.key }}.{{ unit_type }}"
+  register: unit_path_stat
+
+- debug:
+    msg: "{{ unit_path_stat }} :: {{ unit.value }}"
+
 - name: Copy unit configurations in place
   template:
     src: "systemd.unit.j2"
-    dest: "{{ item.value.path|default(unit_path) }}/{{ item.key }}.{{ item.value.type|default(unit_type) }}"
+    dest: "{{ unit_path }}/{{ unit.key }}.{{ unit_type }}"
     owner: "root"
     group: "root"
     mode: 0644
-    backup: true
   vars:
-    config: "{{ item.value }}"
-  loop: "{{ unit_config|dict2items }}"
+    config: "{{ unit.value }}"
