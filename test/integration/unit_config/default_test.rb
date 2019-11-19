@@ -14,7 +14,7 @@ describe file('/etc/systemd/system/test-service.service') do
   its('content') { should match("WantedBy=") }
 end
 
-describe file('/etc/systemd/system/test-socket.socket') do
+describe file('/etc/systemd/system/test-service.socket') do
   it { should exist }
   its('owner') { should eq 'root' }
   its('group') { should eq 'root' }
@@ -24,7 +24,7 @@ describe file('/etc/systemd/system/test-socket.socket') do
   its('content') { should match("WantedBy=") }
 end
 
-describe file('/run/systemd/system/test-mount.mount') do
+describe file('/run/systemd/system/tmp-stdin.mount') do
   it { should exist }
   its('owner') { should eq 'root' }
   its('group') { should eq 'root' }
