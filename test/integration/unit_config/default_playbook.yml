@@ -5,24 +5,29 @@
     - ansible-role-systemd
   vars:
     unit_config:
-      test-service:
+      - name: "test-service"
         Unit:
-          Description: "This is a test service unit which runs sleep"
+          Description: "This is a test service unit which listens at port 1234"
+          After: network-online.target
+          Wants: network-online.target
+          Requires: test-service.socket
         Service:
           User: 'kitchen'
           Group: 'kitchen'
           ExecStart: '/usr/bin/sleep infinity'
+          ExecReload: '/bin/kill -s HUP $MAINPID'
         Install:
           WantedBy: 'multi-user.target'
-      test-socket:
+      - name: "test-service"
         type: "socket"
         Unit:
-          Description: "This is a test socket unit which specifies the 'socket' unit type"
+          Description: "This is a test socket unit which specifies the test-service 'socket' unit type"
         Socket:
-          ListenStream: '2411'
+          ListenStream: '0.0.0.0:1234'
+          Accept: 'true'
         Install:
-          WantedBy: 'multi-user.target'
-      test-mount:
+          WantedBy: 'sockets.target'
+      - name: "tmp-stdin"
         type: "mount"
         path: "/run/systemd/system"
         Unit:
@@ -31,4 +36,4 @@
           What: '/dev/stdin'
           Where: '/tmp/stdin'
         Install:
-          WantedBy: 'multi-user.target'
+          WantedBy: 'mount.target'

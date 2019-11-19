@@ -1,21 +1,21 @@
 ---
-- name: define unit({{ unit.key }}) path and type  attributes
+- name: define unit({{ unit.name }}) path and type  attributes
   set_fact:
-    unit_path: "{{ unit.value.path|default(default_unit_path) }}"
-    unit_type: "{{ unit.value.type|default(default_unit_type) }}"
+    unit_path: "{{ unit.path|default(default_unit_path) }}"
+    unit_type: "{{ unit.type|default(default_unit_type) }}"
 
-- name: Check if unit({{ unit.key }}) configuration exists.
+- name: Check if unit({{ unit.name }}) configuration exists.
   stat:
-    path: "{{ unit_path }}/{{ unit.key }}.{{ unit_type }}"
+    path: "{{ unit_path }}/{{ unit.name }}.{{ unit_type }}"
   register: unit_path_stat
 
-- name: Copy unit({{ unit.key }}) configuration in place
+- name: Copy unit({{ unit.name }}) configuration in place
   template:
     src: "systemd.unit.j2"
-    dest: "{{ unit_path }}/{{ unit.key }}.{{ unit_type }}"
+    dest: "{{ unit_path }}/{{ unit.name }}.{{ unit_type }}"
     owner: "root"
     group: "root"
     mode: 0644
     backup: "{{ unit_path_stat.stat.exists }}"
   vars:
-    config: "{{ unit.value }}"
+    config: "{{ unit }}"
