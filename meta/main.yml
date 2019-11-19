@@ -26,7 +26,6 @@ galaxy_info:
 
   galaxy_tags:
     - systemd
-    - service
-    - manager
+    - service-manager
+    - system-manager
     - linux
-    - units
