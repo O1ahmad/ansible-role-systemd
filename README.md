@@ -15,7 +15,7 @@ Ansible Role:vertical_traffic_light:Systemd
   - [License](#license)
   - [Author Information](#author-information)
 
-Ansible role that installs and configures Systemd [units](http://man7.org/linux/man-pages/man5/systemd.unit.5.html): system components and services managed by the Linux Systemd system/service manager.
+Ansible role that installs and configures **Systemd** [units](http://man7.org/linux/man-pages/man5/systemd.unit.5.html): system components and services managed by the Linux Systemd system/service manager.
 
 ##### Supported Platforms:
 ```
@@ -27,7 +27,7 @@ Ansible role that installs and configures Systemd [units](http://man7.org/linux/
 Requirements
 ------------
 
-`systemd` is generally considered the de-facto service management tool for Linux distributions and should be included with most OS installations. While typically not a concern, it is worth noting that *Linux kernel >= 3.13* is required and *Linux kernel >= 4.2* is necessary for unified cgroup hierarchy support.
+`systemd` is generally considered the de-facto service management tool for Linux distributions and should be included with most OS installations. While typically not a concern, it may be worth noting that *Linux kernel >= 3.13* is required and *Linux kernel >= 4.2* is necessary for unified cgroup hierarchy support.
 
 Reference the systemd [README](https://github.com/systemd/systemd/blob/master/README) for further details.
 
@@ -48,7 +48,7 @@ _The following variables can be customized to control various aspects of install
   
   Files in **/etc** take precedence over those in **/run** which in turn take precedence over those in **/usr/lib**. Drop-in files under any of these directories take precedence over unit files wherever located. Multiple drop-in files with different names are applied in lexicographic order, regardless of which of the directories they reside in. See table below and consult **systemd(1)** for additional details regarding path load priority.
   
-Load paths when running in **system mode** (--system)
+*Load paths when running in **system mode*** (--system)
 
 | Unit Load File Path | Description |
 | --- | --- |
@@ -57,7 +57,7 @@ Load paths when running in **system mode** (--system)
 | /usr/local/lib/systemd/system | Units installed for local system administration |
 | /usr/lib/systemd/system | Units of installed packages |
 
-Load paths when running in **user mode** (--user)
+*Load paths when running in **user mode*** (--user)
 
 | Unit Load File Path | Description |
 | --- | --- |
@@ -111,7 +111,7 @@ Any configuration setting/value key-pair supported by the corresponding *Systemd
 
 _The following provides an overview and example configuration of each unit type for reference_.
 
-**[Service]**
+**[[Service](http://man7.org/linux/man-pages/man5/systemd.service.5.html)]**
 
 Manages daemons and the processes they consist of.
 
@@ -128,7 +128,7 @@ Manages daemons and the processes they consist of.
       Install:
         WantedBy: multi-user.target
 ```
-**[Socket]**
+**[[Socket](http://man7.org/linux/man-pages/man5/systemd.socket.5.html)]**
 
 Encapsulates local IPC or network sockets in the system.
 
@@ -149,7 +149,7 @@ Encapsulates local IPC or network sockets in the system.
         WantedBy: sockets.target
 ```
 
-**[Mount]**
+**[[Mount](http://man7.org/linux/man-pages/man5/systemd.mount.5.html)]**
 
 Controls mount points in the sytem.
 
@@ -171,7 +171,7 @@ Controls mount points in the sytem.
         Options: mode=1777,strictatime,nosuid,nodev
 ```
 
-**[Automount]**
+**[[Automount](http://man7.org/linux/man-pages/man5/systemd.automount.5.html)]**
 
 Provides automount capabilities, for on-demand mounting of file systems as well as parallelized boot-up.
 
@@ -190,7 +190,7 @@ Provides automount capabilities, for on-demand mounting of file systems as well 
         Where: /proc/sys/fs/binfmt_misc
 ```
 
-**[Device]**
+**[[Device](http://man7.org/linux/man-pages/man5/systemd.device.5.html)]**
 
 Exposes kernel devices and implement device-based activation.
 
@@ -206,7 +206,7 @@ SUBSYSTEM=="pci", ATTRS{vendor}=="0x12d2", ATTRS{class}=="0x030000", TAG+="syste
 # Will result in the automatic generation of a nvidia-fallback.device file with appropriate [Unit] and [Install] sections set
 ```
 
-**[Target]**
+**[[Target](http://man7.org/linux/man-pages/man5/systemd.target.5.html)]**
 
 Provides unit organization capabilities and setting of well-known synchronization points during boot-up.
 
@@ -229,7 +229,7 @@ This unit type has no specific options and as such a separate "[Target]" section
         AllowIsolate: yes
 ```
 
-**[Timer]**
+**[[Timer](http://man7.org/linux/man-pages/man5/systemd.timer.5.html)]**
 
 Triggers activation of other units based on timers.
 
@@ -247,7 +247,7 @@ Triggers activation of other units based on timers.
         WantedBy: sockets.target
 ```
 
-**[Swap]**
+**[[Swap](http://man7.org/linux/man-pages/man5/systemd.swap.5.html)]**
 
 Encapsulates memory swap partitions or files of the operating system.
 
@@ -273,7 +273,7 @@ Encapsulates memory swap partitions or files of the operating system.
         WantedBy: multi-user.target
 ```
 
-**[Path]**
+**[[Path](http://man7.org/linux/man-pages/man5/systemd.path.5.html)]**
 
 Activates other services when file system objects change or are modified.
 
@@ -294,7 +294,7 @@ Activates other services when file system objects change or are modified.
         MakeDirectory: yes
 ```
 
-**[Scope]**
+**[[Scope](http://man7.org/linux/man-pages/man5/systemd.scope.5.html)]**
 
 Manages a set of system or foreign/remote processes.
 
@@ -324,7 +324,7 @@ Manages a set of system or foreign/remote processes.
           TasksMax=infinity
 ```
 
-**[Slice]**
+**[[Slice](http://man7.org/linux/man-pages/man5/systemd.slice.5.html)]**
 
 Group and manage system processes in a hierarchical tree for resource management purposes.
 
