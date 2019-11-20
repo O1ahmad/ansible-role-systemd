@@ -10,7 +10,6 @@ Ansible Role:vertical_traffic_light:Systemd
   - [Role Variables](#role-variables)
       - [Install](#install)
       - [Config](#config)
-      - [Launch](#launch)
   - [Dependencies](#dependencies)
   - [Example Playbook](#example-playbook)
   - [License](#license)
@@ -40,7 +39,46 @@ Variables are available and organized according to the following software & mach
 
 #### Install
 
-...*description of installation related vars*...
+_The following variables can be customized to control various aspects of installation of individual systemd units. It is assumed that the host has a working version of the systemd package. Available versions based on OS distribution can be found [here](http://fr2.rpmfind.net/linux/rpm2html/search.php?query=systemd&submit=Search+...&system=&arch=)_
+
+`[unit_config: <config-list-entry>:] path:` (**default**: `/etc/systemd/system`)
+- load path to systemd unit configuration. 
+
+  In addition to /etc/systemd/system (*default*), unit configs and associated drop-in ".d" directory overrides for system services can be placed in /usr/lib/systemd/system or /run/systemd/system directories. Files in /etc take precedence over those in /run which in turn take precedence over those in /usr/lib. Drop-in files under any of these directories take precedence over unit files wherever located. Multiple drop-in files with different names are applied in lexicographic order, regardless of which of the directories they reside in. See table below and consult systemd(1) for details regarding path load priority.
+  
+| Unit Load File Path | Description |
+| --- | --- |
+| /etc/systemd/system | Local configuration |
+| /run/systemd/system | Runtime units |
+| /usr/lib/systemd/system | Units of installed packages |
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: apache
+      path: /run/systemd/system
+      Service:
+        ExecStart: /usr/sbin/httpd
+        ExecReload: /usr/sbin/httpd $OPTIONS -k graceful
+      Install:
+        WantedBy: multi-user.target
+```
+
+`[unit_config: <config-list-entry>:] type:` (**default**: `service`)
+- type of systemd unit to configure. There are currently 11 different unit types, ranging from daemons and the processes they consist of to path modification triggers. Consult systemd(1) for the full list of available units [here](https://web.kamihq.com/web/viewer.html?state=%7B%22ids%22%3A%5B%221lUefHPsKMkh0s9xbPopMy56HNk2JO6jS%22%5D%2C%22action%22%3A%22open%22%2C%22userId%22%3A%22112001717226039816040%22%7D&filename=null).
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: apache
+      type: socket
+      Socket:
+        ListenStream: 0.0.0.0:8080
+      Install:
+        WantedBy: sockets.target
+```
 
 #### Config
 
