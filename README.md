@@ -54,19 +54,19 @@ Load paths when running in **system mode** (--system)
 | --- | --- |
 | /etc/systemd/system | Local configuration |
 | /run/systemd/system | Runtime units |
-| /usr/local/lib/systemd/system | Units installed for local system administrator |
+| /usr/local/lib/systemd/system | Units installed for local system administration |
 | /usr/lib/systemd/system | Units of installed packages |
 
 Load paths when running in **user mode** (--user)
 
 | Unit Load File Path | Description |
 | --- | --- |
-| $XDG_CONFIG_HOME/systemd/user or $HOME/.config/systemd/user | User configuration ($XDG_CONFIG_HOME is used if set, ~/.config otherwise) |
+| *$XDG_CONFIG_HOME*/systemd/user or *$HOME*/.config/systemd/user | User configuration (*$XDG_CONFIG_HOME* is used if set, ~/.config otherwise) |
 | /etc/systemd/user | User units created by the administrator |
-| $XDG_RUNTIME_DIR/systemd/user | Runtime units (only used when $XDG_RUNTIME_DIR is set) |
+| *$XDG_RUNTIME_DIR*/systemd/user | Runtime units (only used when *$XDG_RUNTIME_DIR* is set) |
 | /run/systemd/user | Runtime units |
-| $dir/systemd/user for each $dir in $XDG_DATA_DIRS | Additional locations for installed user units, one for each entry in $XDG_DATA_DIRS |
-| /usr/local/lib/systemd/user | User units installed by the administrator |
+| *$dir*/systemd/user for each *$dir* in *$XDG_DATA_DIRS* | Additional locations for installed user units, one for each entry in *$XDG_DATA_DIRS* |
+| /usr/local/lib/systemd/user | User units installed for local system administration |
 | /usr/lib/systemd/user | User units installed by the distribution package manager |
 
 #### Example
@@ -121,13 +121,14 @@ Manage daemons and the processes they consist of.
 
  ```yaml
   unit_config:
-    - name: apache
-      type: socket
-      Socket:
-        ListenStream: 0.0.0.0:8080
-        Accept: yes
+    # path: /etc/systemd/system/example-service.service
+    - name: example-service
+      Unit:
+        Description: Sleepy service
+      Service:
+        ExecStart: /usr/bin/sleep infinity
       Install:
-        WantedBy: sockets.target
+        WantedBy: multi-user.target
 ```
 **[Socket]**
 
@@ -137,11 +138,15 @@ Encapsulating local IPC or network sockets in the system.
 
  ```yaml
   unit_config:
-    - name: apache
+    - name: docker
       type: socket
+      Unit:
+        Description: Listens/accepts connection requests at /var/run/docker/sock (implicitly *Requires=* associated example-docker.service)
       Socket:
-        ListenStream: 0.0.0.0:8080
-        Accept: yes
+        ListenStream: /var/run/docker.sock
+        SocketMode: 0660
+        SockerUser: root
+        SocketGroup: docker
       Install:
         WantedBy: sockets.target
 ```
@@ -154,13 +159,18 @@ Control mount points in the sytem.
 
  ```yaml
   unit_config:
-    - name: apache
-      type: socket
-      Socket:
-        ListenStream: 0.0.0.0:8080
-        Accept: yes
-      Install:
-        WantedBy: sockets.target
+    - name: tmp
+      type: mount
+      Unit:
+        Description=Temporary Directory (/tmp)
+        Conflicts=umount.target
+        Before=local-fs.target umount.target
+        After=swap.target
+      Mount:
+        What: tmpfs
+        Where: /tmp
+        Type: tmpfs
+        Options: mode=1777,strictatime,nosuid,nodev
 ```
 
 **[Automount]**
@@ -171,30 +181,31 @@ Provide automount capabilities, for on-demand mounting of file systems as well a
 
  ```yaml
   unit_config:
-    - name: apache
-      type: socket
-      Socket:
-        ListenStream: 0.0.0.0:8080
-        Accept: yes
-      Install:
-        WantedBy: sockets.target
+    - name: proc-sys-fs-binfmt_misc
+      type: automount
+      Unit:
+        Description=Arbitrary Executable File Formats File System Automount Point
+        Documentation=https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html
+        ConditionPathExists=/proc/sys/fs/binfmt_misc/
+        ConditionPathIsReadWrite=/proc/sys/
+      Automount:
+        Where: /proc/sys/fs/binfmt_misc
 ```
 
 **[Device]**
 
 Expose kernel devices and implement device-based activation.
 
+This unit type has no specific options and as such a separate "[Device]" section does not exist. The common configuration items are configured in the generic "[Unit]" and "[Install]" sections. `systemd` will dynamically create device units for all kernel devices that are marked with the "systemd" udev tag (by default all block and network devices, and a few others). To tag a udev device, use "TAG+="systemd"" in the udev rules file. Also note that device units are named after the /sys and /dev paths they control.
+
 #### Example
 
  ```yaml
-  unit_config:
-    - name: apache
-      type: socket
-      Socket:
-        ListenStream: 0.0.0.0:8080
-        Accept: yes
-      Install:
-        WantedBy: sockets.target
+# /usr/lib/udev/rules.d/10-nvidia.rules
+
+SUBSYSTEM=="pci", ATTRS{vendor}=="0x12d2", ATTRS{class}=="0x030000", TAG+="systemd", ENV{SYSTEMD_WANTS}="nvidia-fallback.service"
+
+# will result in the automatic generation of a nvidia-fallback.device file
 ```
 
 **[Target]**
