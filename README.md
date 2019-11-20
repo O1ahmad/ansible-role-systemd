@@ -27,7 +27,7 @@ Ansible role that installs and configures Systemd [units](http://man7.org/linux/
 Requirements
 ------------
 
-Systemd is generally considered the de-facto service management tool for Linux distributions and should be included with most OS installations. While typically not a concern, it is worth noting that Linux kernel >= 3.13 is required and Linux kernel >= 4.2 is necessary for unified cgroup hierarchy support.
+`systemd` is generally considered the de-facto service management tool for Linux distributions and should be included with most OS installations. While typically not a concern, it is worth noting that *Linux kernel >= 3.13* is required and *Linux kernel >= 4.2* is necessary for unified cgroup hierarchy support.
 
 Reference the systemd [README](https://github.com/systemd/systemd/blob/master/README) for further details.
 
