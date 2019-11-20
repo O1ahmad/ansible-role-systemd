@@ -44,7 +44,9 @@ _The following variables can be customized to control various aspects of install
 `[unit_config: <config-list-entry>:] path:` (**default**: `/etc/systemd/system`)
 - load path to systemd unit configuration. 
 
-  In addition to /etc/systemd/system (*default*), unit configs and associated drop-in ".d" directory overrides for system services can be placed in /usr/lib/systemd/system or /run/systemd/system directories. Files in /etc take precedence over those in /run which in turn take precedence over those in /usr/lib. Drop-in files under any of these directories take precedence over unit files wherever located. Multiple drop-in files with different names are applied in lexicographic order, regardless of which of the directories they reside in. See table below and consult systemd(1) for details regarding path load priority.
+  In addition to /etc/systemd/system (*default*), unit configs and associated drop-in ".d" directory overrides for system services can be placed in `/usr/lib/systemd/system` or `/run/systemd/system` directories.
+  
+  Files in **/etc** take precedence over those in **/run** which in turn take precedence over those in **/usr/lib**. Drop-in files under any of these directories take precedence over unit files wherever located. Multiple drop-in files with different names are applied in lexicographic order, regardless of which of the directories they reside in. See table below and consult systemd(1) for details regarding path load priority.
   
 | Unit Load File Path | Description |
 | --- | --- |
@@ -76,13 +78,16 @@ _The following variables can be customized to control various aspects of install
       type: socket
       Socket:
         ListenStream: 0.0.0.0:8080
+        Accept: yes
       Install:
         WantedBy: sockets.target
 ```
 
 #### Config
 
-...*description of configuration related vars*...
+Configuration of a `systemd` unit can be expressed in an ini-style config [file](https://en.wikipedia.org/wiki/INI_file)[Reference](https://www.freedesktop.org/software/systemd/man/systemd.unit.html) to get an idea how the config should look.
+
+Each Systemd unit INI config is composed of sections: 2 common amongst all unit types (Unit and Install) and 1 specific to each unit type. Each section can be expressed within a hash, keyed by section title. The value of these section keys are generally dicts representing config specifications containing a set of key-value pairs listing associated settings for each section (e.g. the `ExecStart` specification for a system or web service `[Service]` section or the `ListenStream` option for a web `[Socket]` section) . The following provides an overview and example configuration of each unit type for reference.
 
 Dependencies
 ------------
