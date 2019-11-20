@@ -100,16 +100,14 @@ Load paths when running in **user mode** (--user)
 
 #### Config
 
-Configuration of a `systemd` unit is declared in an [ini-style](https://en.wikipedia.org/wiki/INI_file) config file - see [here](https://www.freedesktop.org/software/systemd/man/systemd.unit.html) to get an idea how the config should look. 
-
-A Systemd unit INI config is composed of sections: 2 common amongst all unit types (`Unit` and `Install`) and 1 specific to each unit type. These unit configurations can be expressed within the role's `unit_config` hash variable as lists of dicts containing key-value pairs representing the name, type, load path of the unit and a combination of the aforemented sections definitions.
+Configuration of a `systemd` unit is declared in an [ini-style](https://en.wikipedia.org/wiki/INI_file) config file. A `systemd` unit *INI* config is composed of sections: 2 common amongst all unit types (`Unit` and `Install`) and 1 specific to each unit type. These unit configurations can be expressed within the role's `unit_config` hash variable as lists of dicts containing key-value pairs representing the name, type, load path of the unit and a combination of the aforemented section definitions.
 
 Each configuration section definition provides a dict containing a set of key-value pairs for corresponding section options (e.g. the `ExecStart` specification for a system or web service `[Service]` section or the `ListenStream` option for a web `[Socket]` section.
 
 `[unit_config: <list-entry>:] Unit | <unit-type e.g. Service, Socket, Device or Mount> | Install:` (**default**: {})
 - section definitions for a unit configuration
 
-Any configuration setting/value key-pair supported by the corresponding `Systemd` unit type specification should be expressible within each `unit_config` collection and properly rendered within the associated INI config.
+Any configuration setting/value key-pair supported by the corresponding *Systemd* unit type specification should be expressible within each `unit_config` collection and properly rendered within the associated *INI* config.
 
 _The following provides an overview and example configuration of each unit type for reference_.
 
@@ -162,10 +160,10 @@ Control mount points in the sytem.
     - name: tmp
       type: mount
       Unit:
-        Description=Temporary Directory (/tmp)
-        Conflicts=umount.target
-        Before=local-fs.target umount.target
-        After=swap.target
+        Description: Temporary Directory (/tmp)
+        Conflicts: umount.target
+        Before: local-fs.target umount.target
+        After: swap.target
       Mount:
         What: tmpfs
         Where: /tmp
@@ -184,10 +182,10 @@ Provide automount capabilities, for on-demand mounting of file systems as well a
     - name: proc-sys-fs-binfmt_misc
       type: automount
       Unit:
-        Description=Arbitrary Executable File Formats File System Automount Point
-        Documentation=https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html
-        ConditionPathExists=/proc/sys/fs/binfmt_misc/
-        ConditionPathIsReadWrite=/proc/sys/
+        Description: Arbitrary Executable File Formats File System Automount Point
+        Documentation: https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html
+        ConditionPathExists: /proc/sys/fs/binfmt_misc/
+        ConditionPathIsReadWrite: /proc/sys/
       Automount:
         Where: /proc/sys/fs/binfmt_misc
 ```
@@ -205,7 +203,7 @@ This unit type has no specific options and as such a separate "[Device]" section
 
 SUBSYSTEM=="pci", ATTRS{vendor}=="0x12d2", ATTRS{class}=="0x030000", TAG+="systemd", ENV{SYSTEMD_WANTS}="nvidia-fallback.service"
 
-# will result in the automatic generation of a nvidia-fallback.device file
+# Will result in the automatic generation of a nvidia-fallback.device file with appropriate [Unit] and [Install] sections set
 ```
 
 **[Target]**
@@ -216,13 +214,17 @@ Provides unit organization capabilities and setting of well-known synchronizatio
 
  ```yaml
   unit_config:
-    - name: apache
-      type: socket
-      Socket:
-        ListenStream: 0.0.0.0:8080
-        Accept: yes
-      Install:
-        WantedBy: sockets.target
+    - name: graphical
+      path: /usr/lib/systemd/system/graphical.target
+      type: target
+      Unit:
+        Description: Graphical Interface
+        Documentation: man:systemd.special(7)
+        Requires: multi-user.target
+        Wants: display-manager.service
+        Conflicts: rescue.service rescue.target
+        After: multi-user.target rescue.service rescue.target display-manager.service
+        AllowIsolate: yes
 ```
 
 **[Timer]**
@@ -233,11 +235,12 @@ Triggers activation of other units based on timers.
 
  ```yaml
   unit_config:
-    - name: apache
-      type: socket
-      Socket:
-        ListenStream: 0.0.0.0:8080
-        Accept: yes
+    - name: dnf-makecache
+      type: timer
+      Timer:
+        OnBootSec: 10min
+        OnUnitInactiveSec: 1h
+        Unit: dnf-makecache.service
       Install:
         WantedBy: sockets.target
 ```
@@ -249,14 +252,23 @@ Encapsulate memory swap partitions or files of the operating system.
 #### Example
 
  ```yaml
+  # Ensure existence of swap file
+  mkdir -p /var/vm
+  fallocate -l 1024m /var/vm/swapfile
+  chmod 600 /var/vm/swapfile
+  mkswap /var/vm/swapfile
+
+------------------------------------
+
   unit_config:
-    - name: apache
-      type: socket
-      Socket:
-        ListenStream: 0.0.0.0:8080
-        Accept: yes
+    - name: var-vm-swap
+      type: swap
+      Unit:
+        Description=Turn on swap for /var/vm/swapfile
+      Swap:
+        What: /var/vm/swapfile
       Install:
-        WantedBy: sockets.target
+        WantedBy: multi-user.target
 ```
 
 **[Path]**
@@ -267,13 +279,17 @@ Activates other services when file system objects change or are modified.
 
  ```yaml
   unit_config:
-    - name: apache
-      type: socket
-      Socket:
-        ListenStream: 0.0.0.0:8080
-        Accept: yes
-      Install:
-        WantedBy: sockets.target
+    - name: systemd-ask-password-wall
+      type: path
+      Unit:
+        Description: Forward Password Requests to Wall Directory Watch
+        Documentation: man:systemd-ask-password-console.service(8)
+        DefaultDependencies: no
+        Conflicts: shutdown.target emergency.service
+        Before: paths.target shutdown.target cryptsetup.target
+      Path:
+        DirectoryNotEmpty: /run/systemd/ask-password
+        MakeDirectory: yes
 ```
 
 **[Scope]**
