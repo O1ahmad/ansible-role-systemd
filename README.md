@@ -100,11 +100,203 @@ Load paths when running in **user mode** (--user)
 
 #### Config
 
-Configuration of a `systemd` unit can be expressed in an [ini-style](https://en.wikipedia.org/wiki/INI_file) config file. See [here](https://www.freedesktop.org/software/systemd/man/systemd.unit.html) to get an idea how the config should look. 
+Configuration of a `systemd` unit is declared in an [ini-style](https://en.wikipedia.org/wiki/INI_file) config file see [here](https://www.freedesktop.org/software/systemd/man/systemd.unit.html) to get an idea how the config should look. 
 
-Each Systemd unit INI config is composed of sections: 2 common amongst all unit types (`Unit` and `Install`) and 1 specific to each unit type. Each section can be expressed within a hash, keyed by section title. The value of these section keys are generally dicts representing config specifications containing a set of key-value pairs listing associated settings for each section (e.g. the `ExecStart` specification for a system or web service `[Service]` section or the `ListenStream` option for a web `[Socket]` section.
+A Systemd unit INI config is composed of sections: 2 common amongst all unit types (`Unit` and `Install`) and 1 specific to each unit type. These unit configurations can be expressed within the role's `unit_config` hash variable as lists of dicts containing key-value pairs representing the name, type, load path of the unit and a combination of the aforemented sections definitions. Each configuration section definition provides a dict containing a set of key-value pairs for corresponding section options (e.g. the `ExecStart` specification for a system or web service `[Service]` section or the `ListenStream` option for a web `[Socket]` section.
+
+[unit_config: <list-entry>:]`[Unit | <unit-type e.g. Service, Socket, Device or Mount> | Install]: (**default**: {})
+- section definitions for a unit configuration
+
+Any configuration setting/value key-pair supported by the corresponding `Systemd` unit type specification should be expressible within each `unit_config` collection and properly rendered within the associated INI config.
 
 _The following provides an overview and example configuration of each unit type for reference_.
+
+**[Service]**
+
+Manage daemons and the processes they consist of.
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: apache
+      type: socket
+      Socket:
+        ListenStream: 0.0.0.0:8080
+        Accept: yes
+      Install:
+        WantedBy: sockets.target
+```
+**[Socket]**
+
+Encapsulating local IPC or network sockets in the system.
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: apache
+      type: socket
+      Socket:
+        ListenStream: 0.0.0.0:8080
+        Accept: yes
+      Install:
+        WantedBy: sockets.target
+```
+
+**[Mount]**
+
+Control mount points in the sytem.
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: apache
+      type: socket
+      Socket:
+        ListenStream: 0.0.0.0:8080
+        Accept: yes
+      Install:
+        WantedBy: sockets.target
+```
+
+**[Automount]**
+
+Provide automount capabilities, for on-demand mounting of file systems as well as parallelized boot-up.
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: apache
+      type: socket
+      Socket:
+        ListenStream: 0.0.0.0:8080
+        Accept: yes
+      Install:
+        WantedBy: sockets.target
+```
+
+**[Device]**
+
+Expose kernel devices and implement device-based activation.
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: apache
+      type: socket
+      Socket:
+        ListenStream: 0.0.0.0:8080
+        Accept: yes
+      Install:
+        WantedBy: sockets.target
+```
+
+**[Target]**
+
+Provides unit organization capabilities and setting of well-known synchronization points during boot-up.
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: apache
+      type: socket
+      Socket:
+        ListenStream: 0.0.0.0:8080
+        Accept: yes
+      Install:
+        WantedBy: sockets.target
+```
+
+**[Timer]**
+
+Triggers activation of other units based on timers.
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: apache
+      type: socket
+      Socket:
+        ListenStream: 0.0.0.0:8080
+        Accept: yes
+      Install:
+        WantedBy: sockets.target
+```
+
+**[Swap]**
+
+Encapsulate memory swap partitions or files of the operating system.
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: apache
+      type: socket
+      Socket:
+        ListenStream: 0.0.0.0:8080
+        Accept: yes
+      Install:
+        WantedBy: sockets.target
+```
+
+**[Path]**
+
+Activates other services when file system objects change or are modified.
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: apache
+      type: socket
+      Socket:
+        ListenStream: 0.0.0.0:8080
+        Accept: yes
+      Install:
+        WantedBy: sockets.target
+```
+
+**[Scope]**
+
+Manage foreign processes.
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: apache
+      type: socket
+      Socket:
+        ListenStream: 0.0.0.0:8080
+        Accept: yes
+      Install:
+        WantedBy: sockets.target
+```
+
+**[Slice]**
+
+Group and manage system processes in a hierarchical tree for resource management purposes.
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: apache
+      type: socket
+      Socket:
+        ListenStream: 0.0.0.0:8080
+        Accept: yes
+      Install:
+        WantedBy: sockets.target
+```
+
 
 Dependencies
 ------------
