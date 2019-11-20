@@ -46,7 +46,7 @@ _The following variables can be customized to control various aspects of install
 
   In addition to /etc/systemd/system (*default*), unit configs and associated drop-in ".d" directory overrides for system services can be placed in `/usr/lib/systemd/system` or `/run/systemd/system` directories.
   
-  Files in **/etc** take precedence over those in **/run** which in turn take precedence over those in **/usr/lib**. Drop-in files under any of these directories take precedence over unit files wherever located. Multiple drop-in files with different names are applied in lexicographic order, regardless of which of the directories they reside in. See table below and consult systemd(1) for details regarding path load priority.
+  Files in **/etc** take precedence over those in **/run** which in turn take precedence over those in **/usr/lib**. Drop-in files under any of these directories take precedence over unit files wherever located. Multiple drop-in files with different names are applied in lexicographic order, regardless of which of the directories they reside in. See table below and consult **systemd(1)** for additional details regarding path load priority.
   
 Load paths when running in **system mode** (--system)
 
@@ -113,7 +113,7 @@ _The following provides an overview and example configuration of each unit type 
 
 **[Service]**
 
-Manage daemons and the processes they consist of.
+Manages daemons and the processes they consist of.
 
 #### Example
 
@@ -130,7 +130,7 @@ Manage daemons and the processes they consist of.
 ```
 **[Socket]**
 
-Encapsulating local IPC or network sockets in the system.
+Encapsulates local IPC or network sockets in the system.
 
 #### Example
 
@@ -151,7 +151,7 @@ Encapsulating local IPC or network sockets in the system.
 
 **[Mount]**
 
-Control mount points in the sytem.
+Controls mount points in the sytem.
 
 #### Example
 
@@ -173,7 +173,7 @@ Control mount points in the sytem.
 
 **[Automount]**
 
-Provide automount capabilities, for on-demand mounting of file systems as well as parallelized boot-up.
+Provides automount capabilities, for on-demand mounting of file systems as well as parallelized boot-up.
 
 #### Example
 
@@ -192,7 +192,7 @@ Provide automount capabilities, for on-demand mounting of file systems as well a
 
 **[Device]**
 
-Expose kernel devices and implement device-based activation.
+Exposes kernel devices and implement device-based activation.
 
 This unit type has no specific options and as such a separate "[Device]" section does not exist. The common configuration items are configured in the generic "[Unit]" and "[Install]" sections. `systemd` will dynamically create device units for all kernel devices that are marked with the "systemd" udev tag (by default all block and network devices, and a few others). To tag a udev device, use "TAG+="systemd"" in the udev rules file. Also note that device units are named after the /sys and /dev paths they control.
 
@@ -209,6 +209,8 @@ SUBSYSTEM=="pci", ATTRS{vendor}=="0x12d2", ATTRS{class}=="0x030000", TAG+="syste
 **[Target]**
 
 Provides unit organization capabilities and setting of well-known synchronization points during boot-up.
+
+This unit type has no specific options and as such a separate "[Target]" section does not exist. The common configuration items are configured in the generic "[Unit]" and "[Install]" sections.
 
 #### Example
 
@@ -247,7 +249,7 @@ Triggers activation of other units based on timers.
 
 **[Swap]**
 
-Encapsulate memory swap partitions or files of the operating system.
+Encapsulates memory swap partitions or files of the operating system.
 
 #### Example
 
@@ -294,38 +296,41 @@ Activates other services when file system objects change or are modified.
 
 **[Scope]**
 
-Manage foreign processes.
+Manages a set of system or foreign/remote processes.
+
+**Scope units are not configured via unit configuration files, but are only created programmatically using the bus interfaces of systemd.** Unlike service units, scope units manage externally created processes, and do not fork off processes on its own. The main purpose of scope units is grouping worker processes of a system service for organization and for managing resources.
 
 #### Example
 
  ```yaml
+ # *This configuration is for a transient unit file, created programmatically via the systemd API. Do not copy or edit.*
   unit_config:
-    - name: apache
-      type: socket
-      Socket:
-        ListenStream: 0.0.0.0:8080
-        Accept: yes
-      Install:
-        WantedBy: sockets.target
+    - name: user-session
+      type: scope
+      
+      Unit:
+        Description: Session of user
+        Wants: user-runtime-dir@1000.service
+        Wants: user@1000.service
+        After: systemd-logind.service
+        After: systemd-user-sessions.service
+        After: user-runtime-dir@1000.service
+        After: user@1000.service
+        RequiresMountsFor: /home/user
+        Scope:
+          Slice: user-1000.slice
+       Scope:
+          SendSIGHUP=yes
+          TasksMax=infinity
 ```
 
 **[Slice]**
 
 Group and manage system processes in a hierarchical tree for resource management purposes.
 
-#### Example
+The name of the slice encodes the location in the tree. The name consists of a dash-separated series of names, which describes the path to the slice from the root slice. By default, service and scope units are placed in system.slice, virtual machines and containers registered with systemd-machined(1) are found in machine.slice and user sessions handled by systemd-logind(1) in user.slice.
 
- ```yaml
-  unit_config:
-    - name: apache
-      type: socket
-      Socket:
-        ListenStream: 0.0.0.0:8080
-        Accept: yes
-      Install:
-        WantedBy: sockets.target
-```
-
+See [systemd.slice(5)](https://web.kamihq.com/web/viewer.html?state=%7B%22ids%22%3A%5B%221Irs__WSIPpKfQmw7pKGFwyy4KsnXHHpD%22%5D%2C%22action%22%3A%22open%22%2C%22userId%22%3A%22112001717226039816040%22%7D&filename=null) for more details.
 
 Dependencies
 ------------
