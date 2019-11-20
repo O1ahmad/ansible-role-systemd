@@ -39,7 +39,7 @@ Variables are available and organized according to the following software & mach
 
 #### Install
 
-_The following variables can be customized to control various aspects of installation of individual systemd units. It is assumed that the host has a working version of the systemd package. Available versions based on OS distribution can be found [here](http://fr2.rpmfind.net/linux/rpm2html/search.php?query=systemd&submit=Search+...&system=&arch=)_
+_The following variables can be customized to control various aspects of installation of individual systemd units. It is assumed that the host has a working version of the systemd package. Available versions based on OS distribution can be found [here](http://fr2.rpmfind.net/linux/rpm2html/search.php?query=systemd&submit=Search+...&system=&arch=)_.
 
 `[unit_config: <config-list-entry>:] path:` (**default**: `/etc/systemd/system`)
 - load path to systemd unit configuration. 
@@ -87,7 +87,9 @@ _The following variables can be customized to control various aspects of install
 
 Configuration of a `systemd` unit can be expressed in an [ini-style](https://en.wikipedia.org/wiki/INI_file) config file. [Reference](https://www.freedesktop.org/software/systemd/man/systemd.unit.html) to get an idea how the config should look.
 
-Each Systemd unit INI config is composed of sections: 2 common amongst all unit types (Unit and Install) and 1 specific to each unit type. Each section can be expressed within a hash, keyed by section title. The value of these section keys are generally dicts representing config specifications containing a set of key-value pairs listing associated settings for each section (e.g. the `ExecStart` specification for a system or web service `[Service]` section or the `ListenStream` option for a web `[Socket]` section) . The following provides an overview and example configuration of each unit type for reference.
+Each Systemd unit INI config is composed of sections: 2 common amongst all unit types (Unit and Install) and 1 specific to each unit type. Each section can be expressed within a hash, keyed by section title. The value of these section keys are generally dicts representing config specifications containing a set of key-value pairs listing associated settings for each section (e.g. the `ExecStart` specification for a system or web service `[Service]` section or the `ListenStream` option for a web `[Socket]` section.
+
+_The following provides an overview and example configuration of each unit type for reference_.
 
 Dependencies
 ------------
