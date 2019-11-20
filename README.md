@@ -15,7 +15,7 @@ Ansible Role:vertical_traffic_light:Systemd
   - [License](#license)
   - [Author Information](#author-information)
 
-Ansible role that installs and configures Systemd [Units](http://man7.org/linux/man-pages/man5/systemd.unit.5.html): system components and services managed by the Linux Systemd system/service manager.
+Ansible role that installs and configures Systemd [units](http://man7.org/linux/man-pages/man5/systemd.unit.5.html): system components and services managed by the Linux Systemd system/service manager.
 
 ##### Supported Platforms:
 ```
@@ -102,9 +102,11 @@ Load paths when running in **user mode** (--user)
 
 Configuration of a `systemd` unit is declared in an [ini-style](https://en.wikipedia.org/wiki/INI_file) config file see [here](https://www.freedesktop.org/software/systemd/man/systemd.unit.html) to get an idea how the config should look. 
 
-A Systemd unit INI config is composed of sections: 2 common amongst all unit types (`Unit` and `Install`) and 1 specific to each unit type. These unit configurations can be expressed within the role's `unit_config` hash variable as lists of dicts containing key-value pairs representing the name, type, load path of the unit and a combination of the aforemented sections definitions. Each configuration section definition provides a dict containing a set of key-value pairs for corresponding section options (e.g. the `ExecStart` specification for a system or web service `[Service]` section or the `ListenStream` option for a web `[Socket]` section.
+A Systemd unit INI config is composed of sections: 2 common amongst all unit types (`Unit` and `Install`) and 1 specific to each unit type. These unit configurations can be expressed within the role's `unit_config` hash variable as lists of dicts containing key-value pairs representing the name, type, load path of the unit and a combination of the aforemented sections definitions.
 
-[unit_config: <list-entry>:]`[Unit | <unit-type e.g. Service, Socket, Device or Mount> | Install]: (**default**: {})
+Each configuration section definition provides a dict containing a set of key-value pairs for corresponding section options (e.g. the `ExecStart` specification for a system or web service `[Service]` section or the `ListenStream` option for a web `[Socket]` section.
+
+[unit_config: <list-entry>:] Unit | <unit-type e.g. Service, Socket, Device or Mount> | Install: (**default**: {})
 - section definitions for a unit configuration
 
 Any configuration setting/value key-pair supported by the corresponding `Systemd` unit type specification should be expressible within each `unit_config` collection and properly rendered within the associated INI config.
