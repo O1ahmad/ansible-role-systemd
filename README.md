@@ -41,7 +41,7 @@ Variables are available and organized according to the following software & mach
 
 _The following variables can be customized to control various aspects of installation of individual systemd units. It is assumed that the host has a working version of the systemd package. Available versions based on OS distribution can be found [here](http://fr2.rpmfind.net/linux/rpm2html/search.php?query=systemd&submit=Search+...&system=&arch=)_.
 
-`[unit_config: <config-list-entry>:] path:` (**default**: `/etc/systemd/system`)
+`[unit_config: <config-list-entry>:] path:` (**default**: <string> `/etc/systemd/system`)
 - load path to systemd unit configuration. 
 
   In addition to /etc/systemd/system (*default*), unit configs and associated drop-in ".d" directory overrides for system services can be placed in `/usr/lib/systemd/system` or `/run/systemd/system` directories.
@@ -82,7 +82,7 @@ _The following variables can be customized to control various aspects of install
         WantedBy: multi-user.target
 ```
 
-`[unit_config: <config-list-entry>:] type:` (**default**: `service`)
+`[unit_config: <config-list-entry>:] type: <string>` (**default**: `service`)
 - type of systemd unit to configure. There are currently 11 different unit types, ranging from daemons and the processes they consist of to path modification triggers. Consult [systemd(1)](https://web.kamihq.com/web/viewer.html?state=%7B%22ids%22%3A%5B%221lUefHPsKMkh0s9xbPopMy56HNk2JO6jS%22%5D%2C%22action%22%3A%22open%22%2C%22userId%22%3A%22112001717226039816040%22%7D&filename=null) for the full list of available units.
 
 #### Example
@@ -104,7 +104,7 @@ Configuration of a `systemd` unit is declared in an [ini-style](https://en.wikip
 
 Each configuration section definition provides a dict containing a set of key-value pairs for corresponding section options (e.g. the `ExecStart` specification for a system or web service `[Service]` section or the `ListenStream` option for a web `[Socket]` section.
 
-`[unit_config: <list-entry>:] Unit | <unit-type e.g. Service, Socket, Device or Mount> | Install:` (**default**: {})
+`[unit_config: <list-entry>:] Unit | <unit-type e.g. Service, Socket, Device or Mount> | Install: <dict>` (**default**: {})
 - section definitions for a unit configuration
 
 Any configuration setting/value key-pair supported by the corresponding *Systemd* unit type specification should be expressible within each `unit_config` collection and properly rendered within the associated *INI* config.
