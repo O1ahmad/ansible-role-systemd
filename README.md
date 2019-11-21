@@ -380,6 +380,7 @@ service/socket/mount pair:
           Where: '/var/data/my_service'
         Install:
           WantedBy: 'multi-user.target'
+```
 
 License
 -------
