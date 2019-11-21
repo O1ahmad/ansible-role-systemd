@@ -339,12 +339,47 @@ None
 
 Example Playbook
 ----------------
-default example:
+default example (no custom unit configurations specified):
 ```
 - hosts: all
   roles:
-  - role: 0xOI.systemd
+  - role: 0x0I.systemd
 ```
+
+service/socket/mount pair:
+```
+- hosts: webservers
+  roles:
+  - role: 0x01.systemd
+    vars:
+      unit_config:
+      - name: "my-service"
+        Unit:
+          After: network-online.target
+          Wants: network-online.target
+          Requires: my-service.socket
+        Service:
+          User: 'web'
+          Group: 'web'
+          ExecStart: '/usr/local/bin/my_service $ARGS'
+          ExecReload: '/bin/kill -s HUP $MAINPID'
+        Install:
+          WantedBy: 'multi-user.target'
+      - name: "my-service"
+        type: "socket"
+        Socket:
+          ListenStream: '0.0.0.0:4321'
+          Accept: 'true'
+        Install:
+          WantedBy: 'sockets.target'
+      - name: "var-data-my_service"
+        type: "mount"
+        path: "/run/systemd/system"
+        Mount:
+          What: '/dev/nvme0'
+          Where: '/var/data/my_service'
+        Install:
+          WantedBy: 'multi-user.target'
 
 License
 -------
