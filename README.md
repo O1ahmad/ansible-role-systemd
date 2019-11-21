@@ -139,7 +139,7 @@ Encapsulates local IPC or network sockets in the system.
     - name: docker
       type: socket
       Unit:
-        Description: Listens/accepts connection requests at /var/run/docker/sock (implicitly *Requires=* associated example-docker.service)
+        Description: Listens/accepts connection requests at /var/run/docker/sock (implicitly *Requires=* associated docker.service)
       Socket:
         ListenStream: /var/run/docker.sock
         SocketMode: 0660
@@ -157,16 +157,16 @@ Controls mount points in the sytem.
 
  ```yaml
   unit_config:
-    - name: tmp
+    - name: tmp_new
       type: mount
       Unit:
-        Description: Temporary Directory (/tmp)
+        Description: New Temporary Directory (/tmp_new)
         Conflicts: umount.target
         Before: local-fs.target umount.target
         After: swap.target
       Mount:
         What: tmpfs
-        Where: /tmp
+        Where: /tmp_new
         Type: tmpfs
         Options: mode=1777,strictatime,nosuid,nodev
 ```
@@ -192,9 +192,9 @@ Provides automount capabilities, for on-demand mounting of file systems as well 
 
 **[[Device](http://man7.org/linux/man-pages/man5/systemd.device.5.html)]**
 
-Exposes kernel devices and implement device-based activation.
+Exposes kernel devices and implements device-based activation.
 
-This unit type has no specific options and as such a separate "[Device]" section does not exist. The common configuration items are configured in the generic "[Unit]" and "[Install]" sections. `systemd` will dynamically create device units for all kernel devices that are marked with the "systemd" udev tag (by default all block and network devices, and a few others). To tag a udev device, use "TAG+="systemd"" in the udev rules file. Also note that device units are named after the /sys and /dev paths they control.
+This unit type has no specific options and as such a separate `[Device]` section does not exist. The common configuration items are configured in the generic `[Unit]` and `[Install]` sections. `systemd` will dynamically create device units for all kernel devices that are marked with the "systemd" udev tag (by default all block and network devices, and a few others). To tag a udev device, use **TAG+="systemd** in the udev rules file. Also note that device units are named after the */sys* and */dev* paths they control.
 
 #### Example
 
@@ -210,7 +210,7 @@ SUBSYSTEM=="pci", ATTRS{vendor}=="0x12d2", ATTRS{class}=="0x030000", TAG+="syste
 
 Provides unit organization capabilities and setting of well-known synchronization points during boot-up.
 
-This unit type has no specific options and as such a separate "[Target]" section does not exist. The common configuration items are configured in the generic "[Unit]" and "[Install]" sections.
+This unit type has no specific options and as such a separate `[Target]` section does not exist. The common configuration items are configured in the generic `[Unit]` and `[Install]` sections.
 
 #### Example
 
@@ -244,7 +244,7 @@ Triggers activation of other units based on timers.
         OnUnitInactiveSec: 1h
         Unit: dnf-makecache.service
       Install:
-        WantedBy: sockets.target
+        WantedBy: multi-user.target
 ```
 
 **[[Swap](http://man7.org/linux/man-pages/man5/systemd.swap.5.html)]**
@@ -298,7 +298,7 @@ Activates other services when file system objects change or are modified.
 
 Manages a set of system or foreign/remote processes.
 
-**Scope units are not configured via unit configuration files, but are only created programmatically using the bus interfaces of systemd.** Unlike service units, scope units manage externally created processes, and do not fork off processes on its own. The main purpose of scope units is grouping worker processes of a system service for organization and for managing resources.
+**Scope units are not configured via unit configuration files, but are only created programmatically using the bus interfaces of systemd.** Unlike service units, scope units manage externally created processes, and do not fork off processes on their own. The main purpose of scope units is grouping worker processes of a system service for organization and for managing resources.
 
 #### Example
 
