@@ -37,3 +37,9 @@
           Where: '/tmp/stdin'
         Install:
           WantedBy: 'mount.target'
+      - name: "type-only-section"
+        Service:
+          User: 'kitchen'
+          Group: 'kitchen'
+          ExecStart: '/usr/bin/sleep infinity'
+          ExecReload: '/bin/kill -s HUP $MAINPID'
