@@ -1,4 +1,4 @@
-<p><img src="https://brand.systemd.io/assets/png/systemd-logomark.png" alt="systemd logo" title="systemd" align="right" height="60" /></p>
+<p><img src="https://www.servethehome.com/wp-content/uploads/2017/11/Redhat-logo.jpg" alt="redhat logo" title="redhat" align="right" height="60" /></p>
 
 Ansible Role:vertical_traffic_light:Systemd
 =========
