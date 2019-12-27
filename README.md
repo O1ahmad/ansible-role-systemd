@@ -1,3 +1,5 @@
+<p><img src="https://brand.systemd.io/assets/png/systemd-logomark.png" alt="systemd logo" title="systemd" align="right" height="60" /></p>
+
 Ansible Role:vertical_traffic_light:Systemd
 =========
 [![Galaxy Role](https://img.shields.io/ansible/role/44466.svg)](https://galaxy.ansible.com/0x0I/systemd)
