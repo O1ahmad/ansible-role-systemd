@@ -85,7 +85,7 @@ _The following variables can be customized to control various aspects of install
 ```
 
 `[unit_config: <config-list-entry>:] type: <string>` (**default**: `service`)
-- type of systemd unit to configure. There are currently 11 different unit types, ranging from daemons and the processes they consist of to path modification triggers. Consult [systemd(1)](https://web.kamihq.com/web/viewer.html?state=%7B%22ids%22%3A%5B%221lUefHPsKMkh0s9xbPopMy56HNk2JO6jS%22%5D%2C%22action%22%3A%22open%22%2C%22userId%22%3A%22112001717226039816040%22%7D&filename=null) for the full list of available units.
+- type of systemd unit to configure. There are currently 11 different unit types, ranging from daemons and the processes they consist of to path modification triggers. Consult [systemd(1)](http://man7.org/linux/man-pages/man1/systemd.1.html) for the full list of available units.
 
 #### Example
 
@@ -332,7 +332,7 @@ Group and manage system processes in a hierarchical tree for resource management
 
 The name of the slice encodes the location in the tree. The name consists of a dash-separated series of names, which describes the path to the slice from the root slice. By default, service and scope units are placed in system.slice, virtual machines and containers registered with systemd-machined(1) are found in machine.slice and user sessions handled by systemd-logind(1) in user.slice.
 
-See [systemd.slice(5)](https://web.kamihq.com/web/viewer.html?state=%7B%22ids%22%3A%5B%221Irs__WSIPpKfQmw7pKGFwyy4KsnXHHpD%22%5D%2C%22action%22%3A%22open%22%2C%22userId%22%3A%22112001717226039816040%22%7D&filename=null) for more details.
+See [systemd.slice(5)](http://man7.org/linux/man-pages/man5/systemd.slice.5.html) for more details.
 
 Dependencies
 ------------
