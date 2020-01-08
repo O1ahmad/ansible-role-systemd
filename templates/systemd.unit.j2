@@ -1,5 +1,5 @@
-# Managed by Ansible (0xOI/ansible-role-systemd)
-# see: Systemd Unit configuration logic -- http://man7.org/linux/man-pages/man5/systemd.unit.5.html
+{{ ansible_managed | comment }}
+# see: Systemd Unit configuration logic -- http://man7.org/linux/man-pages/man5/systemd.unit.5.html for more details
 
 {% if "Unit" in config %}
 [Unit]
