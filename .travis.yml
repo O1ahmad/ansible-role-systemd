@@ -16,7 +16,8 @@ before_script:
 script:
   - ansible-lint -c ./test/lint/.ansible-lint .
   - yamllint --config-file ./test/lint/yaml-lint.yml .
-  - bundle exec kitchen verify unit-config --concurrency
+  - bundle exec kitchen verify config-unit-centos-7
+  - bundle exec kitchen verify config-unit-ubuntu-1804
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

@@ -1,6 +1,3 @@
 ---
-# main role installation, configuration and operation tasks
-- name: Include common setup tasks
-  include_tasks: "common/{{ item }}.yml"
-  with_items:
-    - "config"
+- name: Include common config tasks
+  include_tasks: "common/config.yml"

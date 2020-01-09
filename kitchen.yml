@@ -93,9 +93,9 @@ platforms:
         - systemctl enable ssh.service
 
 suites:
-  - name: unit_config
+  - name: config_unit
     provisioner:
-      playbook: test/integration/unit_config/default_playbook.yml
+      playbook: test/integration/config/config_unit/default_playbook.yml
     verifier:
       inspec_tests:
-        - path: test/integration/unit_config
+        - path: test/integration/config/config_unit
