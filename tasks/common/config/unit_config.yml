@@ -4,11 +4,6 @@
     unit_path: "{{ unit.path|default(default_unit_path) }}"
     unit_type: "{{ unit.type|default(default_unit_type) }}"
 
-- name: Check if unit({{ unit.name }}) configuration exists.
-  stat:
-    path: "{{ unit_path }}/{{ unit.name }}.{{ unit_type }}"
-  register: unit_path_stat
-
 - name: Copy unit({{ unit.name }}) configuration in place
   template:
     src: "systemd.unit.j2"
@@ -16,6 +11,6 @@
     owner: "root"
     group: "root"
     mode: 0644
-    backup: "{{ unit_path_stat.stat.exists }}"
+    backup: true
   vars:
     config: "{{ unit }}"
