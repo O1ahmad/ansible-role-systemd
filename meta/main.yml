@@ -1,5 +1,4 @@
 ---
-# role metadata file
 galaxy_info:
   author: Ahmad Wilson
   role_name: systemd

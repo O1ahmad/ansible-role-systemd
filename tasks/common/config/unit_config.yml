@@ -1,8 +1,8 @@
 ---
 - name: define unit({{ unit.name }}) path and type  attributes
   set_fact:
-    unit_path: "{{ unit.path|default(default_unit_path) }}"
-    unit_type: "{{ unit.type|default(default_unit_type) }}"
+    unit_path: "{{ unit.path|default(_default_unit_path) }}"
+    unit_type: "{{ unit.type|default(_default_unit_type) }}"
 
 - name: Copy unit({{ unit.name }}) configuration in place
   template:
