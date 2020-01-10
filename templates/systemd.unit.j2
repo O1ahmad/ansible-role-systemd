@@ -8,8 +8,8 @@
 {% endfor %}
 {% endif %}
 
-[{{ config.type|default(default_unit_type)|title }}]
-{% for key, value in config[config.type|default(default_unit_type)|title].items() %}
+[{{ config.type|default(_default_unit_type)|title }}]
+{% for key, value in config[config.type|default(_default_unit_type)|title].items() %}
 {{ key }}={{ value }}
 {% endfor %}
 
