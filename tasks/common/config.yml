@@ -1,6 +1,8 @@
 ---
-- name: render systemd unit configurations
+- name: Render systemd unit configurations
   include: common/config/unit_config.yml
   loop: "{{ unit_config }}"
   loop_control:
     loop_var: unit
+  tags:
+    - config

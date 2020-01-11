@@ -1,3 +1,5 @@
 ---
 - name: Include common config tasks
   include_tasks: "common/config.yml"
+  tags:
+    - config
