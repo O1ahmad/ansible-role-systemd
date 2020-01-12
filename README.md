@@ -12,6 +12,7 @@ Ansible Role:vertical_traffic_light:Systemd
   - [Role Variables](#role-variables)
       - [Install](#install)
       - [Config](#config)
+      - [Uninstall](#uninstall)
   - [Dependencies](#dependencies)
   - [Example Playbook](#example-playbook)
   - [License](#license)
@@ -38,18 +39,19 @@ Role Variables
 Variables are available and organized according to the following software & machine provisioning stages:
 * _install_
 * _config_
+* _uninstall_
 
 #### Install
 
 _The following variables can be customized to control various aspects of installation of individual systemd units. It is assumed that the host has a working version of the systemd package. Available versions based on OS distribution can be found [here](http://fr2.rpmfind.net/linux/rpm2html/search.php?query=systemd&submit=Search+...&system=&arch=)_.
 
 `[unit_config: <config-list-entry>:] path:` (**default**: <string> `/etc/systemd/system`)
-- load path to systemd unit configuration. 
+- load path to systemd unit configuration.
 
   In addition to /etc/systemd/system (*default*), unit configs and associated drop-in ".d" directory overrides for system services can be placed in `/usr/lib/systemd/system` or `/run/systemd/system` directories.
-  
+
   Files in **/etc** take precedence over those in **/run** which in turn take precedence over those in **/usr/lib**. Drop-in files under any of these directories take precedence over unit files wherever located. Multiple drop-in files with different names are applied in lexicographic order, regardless of which of the directories they reside in. See table below and consult **systemd(1)** for additional details regarding path load priority.
-  
+
 *Load paths when running in **system mode*** (--system)
 
 | Unit Load File Path | Description |
@@ -309,7 +311,7 @@ Manages a set of system or foreign/remote processes.
   unit_config:
     - name: user-session
       type: scope
-      
+
       Unit:
         Description: Session of user
         Wants: user-runtime-dir@1000.service
@@ -333,6 +335,18 @@ Group and manage system processes in a hierarchical tree for resource management
 The name of the slice encodes the location in the tree. The name consists of a dash-separated series of names, which describes the path to the slice from the root slice. By default, service and scope units are placed in system.slice, virtual machines and containers registered with systemd-machined(1) are found in machine.slice and user sessions handled by systemd-logind(1) in user.slice.
 
 See [systemd.slice(5)](http://man7.org/linux/man-pages/man5/systemd.slice.5.html) for more details.
+
+#### Uninstall
+
+Support for uninstalling and removing artifacts necessary for provisioning allows for users/operators to return a target host to its configured state prior to application of this role. This can be useful for recycling nodes and roles and perhaps providing more graceful/managed transitions between tooling upgrades.
+
+_The following variable(s) can be customized to manage this uninstall process:_
+
+`perform_uninstall: <true | false>` (**default**: `false`)
+- whether to uninstall and remove systemd units managed by this role from a target host
+
+`uninstall_units: <list>` (**default**: [])
+- list of systemd units (previously installed via this role) to uninstall/remove all artifacts and remnants of on a target host (**see**: `handlers/main.yml` for details)
 
 Dependencies
 ------------

@@ -1,8 +1,17 @@
 ---
-- name: Render systemd unit configurations
-  include: common/config/unit_config.yml
-  loop: "{{ unit_config }}"
-  loop_control:
-    loop_var: unit
+- name: Render unit({{ unit.name }}) configuration
+  template:
+    src: "systemd.unit.j2"
+    dest: "{{ item.path|default(_default_unit_path) }}/{{ item.name }}.{{ item.type|default(_default_unit_type) }}"
+    owner: "root"
+    group: "root"
+    mode: 0644
+    backup: true
+  vars:
+    config: "{{ item }}"
+  register: "restart_units"
+  with_items: "{{ unit_config }}"
+  notify:
+    Reload systemd units
   tags:
     - config
