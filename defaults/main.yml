@@ -2,4 +2,4 @@
 _default_unit_path: "/etc/systemd/system"
 _default_unit_type: "service"
 
-perform_uninstall: false
+unit_config: []

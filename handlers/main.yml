@@ -5,21 +5,4 @@
     name: "{{ item.dest | basename }}"
     daemon_reload: true
   with_items: "{{ restart_units.results }}"
-  listen: Reload systemd units
-
-- name: Stop and disable systemd units
-  become: true
-  systemd:
-    name: "{{ item.name }}.{{ item.type | default(_default_unit_type) }}"
-    state: stopped
-    enabled: false
-  with_items: "{{ uninstall_units|default(unit_config) }}"
-  listen: Uninstall systemd units
-
-- name: Remove systemd unit files
-  become: true
-  file:
-    path: "{{ item.path | default(_default_unit_path) }}/{{ item.name }}.{{ item.type | default(_default_unit_type) }}"
-    state: absent
-  with_items: "{{ uninstall_units|default(unit_config) }}"
-  listen: Uninstall systemd units
+  listen: "Reload systemd units"
