@@ -314,10 +314,7 @@ Manages a set of system or foreign/remote processes.
         Description: Session of user
         Wants: user-runtime-dir@1000.service
         Wants: user@1000.service
-        After: systemd-logind.service
-        After: systemd-user-sessions.service
-        After: user-runtime-dir@1000.service
-        After: user@1000.service
+        After: systemd-logind.service systemd-user-sessions.service user-runtime-dir@1000.service user@1000.service
         RequiresMountsFor: /home/user
         Scope:
           Slice: user-1000.slice
