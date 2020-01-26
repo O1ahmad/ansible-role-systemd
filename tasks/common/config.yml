@@ -12,7 +12,6 @@
     config: "{{ item }}"
   register: "restart_units"
   with_items: "{{ unit_config }}"
-  notify:
-    "Reload systemd units"
+  notify: Reload systemd units
   tags:
     - config
