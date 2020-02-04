@@ -4,7 +4,7 @@ galaxy_info:
   role_name: systemd
   description: Systemd, a system and service manager for Linux operating systems
   company: "O1.IO"
-  license: license (Apache, BSD, MIT)
+  license: license (MIT)
   min_ansible_version: 2.6
   platforms:
     - name: EL
