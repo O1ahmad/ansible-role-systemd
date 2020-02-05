@@ -1,0 +1,38 @@
+---
+- name: Systemd unit uninstall integration test playbook
+  hosts: test-kitchen
+  roles:
+    - role: ansible-role-systemd
+      vars:
+        perform_uninstall: false
+        unit_config:
+          - name: "test-service"
+            Unit:
+              Description: "This is a test service unit which listens at port 1234"
+              After: network-online.target
+              Wants: network-online.target
+              Requires: test-service.socket
+            Service:
+              User: 'kitchen'
+              Group: 'kitchen'
+              ExecStart: '/usr/bin/sleep infinity'
+              ExecReload: '/bin/kill -s HUP $MAINPID'
+            Install:
+              WantedBy: 'multi-user.target'
+    - role: ansible-role-systemd
+      vars:
+        perform_uninstall: true
+        unit_config:
+          - name: "test-service"
+            Unit:
+              Description: "This is a test service unit which listens at port 1234"
+              After: network-online.target
+              Wants: network-online.target
+              Requires: test-service.socket
+            Service:
+              User: 'kitchen'
+              Group: 'kitchen'
+              ExecStart: '/usr/bin/sleep infinity'
+              ExecReload: '/bin/kill -s HUP $MAINPID'
+            Install:
+              WantedBy: 'multi-user.target'
