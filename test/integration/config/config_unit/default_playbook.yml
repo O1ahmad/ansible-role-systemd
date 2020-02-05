@@ -1,45 +1,39 @@
 ---
-- name: Default playbook for testing
+- name: Systemd unit configuration integration test playbook
   hosts: test-kitchen
   roles:
-    - ansible-role-systemd
-  vars:
-    unit_config:
-      - name: "test-service"
-        Unit:
-          Description: "This is a test service unit which listens at port 1234"
-          After: network-online.target
-          Wants: network-online.target
-          Requires: test-service.socket
-        Service:
-          User: 'kitchen'
-          Group: 'kitchen'
-          ExecStart: '/usr/bin/sleep infinity'
-          ExecReload: '/bin/kill -s HUP $MAINPID'
-        Install:
-          WantedBy: 'multi-user.target'
-      - name: "test-service"
-        type: "socket"
-        Unit:
-          Description: "This is a test socket unit which specifies the test-service 'socket' unit type"
-        Socket:
-          ListenStream: '0.0.0.0:1234'
-          Accept: 'true'
-        Install:
-          WantedBy: 'sockets.target'
-      - name: "tmp-stdin"
-        type: "mount"
-        path: "/run/systemd/system"
-        Unit:
-          Description: "This is a test mount unit which overrides the default unit path"
-        Mount:
-          What: '/dev/stdin'
-          Where: '/tmp/stdin'
-        Install:
-          WantedBy: 'mount.target'
-      - name: "type-only-section"
-        Service:
-          User: 'kitchen'
-          Group: 'kitchen'
-          ExecStart: '/usr/bin/sleep infinity'
-          ExecReload: '/bin/kill -s HUP $MAINPID'
+    - role: ansible-role-systemd
+      vars:
+        unit_config:
+          - name: "test-service"
+            Unit:
+              Description: "This is a test service unit which listens at port 1234"
+              After: network-online.target
+              Wants: network-online.target
+              Requires: test-service.socket
+            Service:
+              User: 'kitchen'
+              Group: 'kitchen'
+              ExecStart: '/usr/bin/sleep infinity'
+              ExecReload: '/bin/kill -s HUP $MAINPID'
+            Install:
+              WantedBy: 'multi-user.target'
+          - name: "test-service"
+            type: "socket"
+            Unit:
+              Description: "This is a test socket unit which specifies the test-service 'socket' unit type"
+            Socket:
+              ListenStream: '0.0.0.0:1234'
+              Accept: 'true'
+            Install:
+              WantedBy: 'sockets.target'
+          - name: "tmp-stdin"
+            type: "mount"
+            path: "/run/systemd/system"
+            Unit:
+              Description: "This is a test mount unit which overrides the default unit path"
+            Mount:
+              What: '/dev/stdin'
+              Where: '/tmp/stdin'
+            Install:
+              WantedBy: 'mount.target'

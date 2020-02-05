@@ -1,5 +1,4 @@
 ---
-# kitchen configuration for CI testing
 driver:
   name: docker
 
@@ -26,7 +25,6 @@ provisioner:
   name: ansible_playbook
   require_chef_for_busser: false
   require_ruby_for_busser: false
-  ansible_verbosity: 2
   ansible_verbose: true
   ansible_cfg_path: test/ansible.cfg
 
