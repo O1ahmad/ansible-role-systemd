@@ -341,7 +341,7 @@ Support for uninstalling and removing artifacts necessary for provisioning allow
 _The following variable(s) can be customized to manage this uninstall process:_
 
 `perform_uninstall: <true | false>` (**default**: `false`)
-- whether to uninstall and remove all artifacts and remnants of this `traefik` installation on a target host (**see**: `handlers/main.yml` for details)
+- whether to uninstall and remove all managed `systemd` unit configs on a target host (**see**: `handlers/main.yml` for details)
 
 Dependencies
 ------------
