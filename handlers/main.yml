@@ -6,3 +6,11 @@
     daemon_reload: true
   with_items: "{{ restart_units.results }}"
   listen: "Reload systemd units"
+
+- name: Remove managed systemd unit files
+  become: true
+  file:
+    path: "{{ item.path | default(_default_unit_path) }}/{{ item.name }}.{{ item.type | default(_default_unit_type) }}"
+    state: absent
+  listen: Uninstall config
+  with_items: "{{ unit_config }}"

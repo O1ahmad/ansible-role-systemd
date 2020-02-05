@@ -1,4 +1,9 @@
 ---
+- name: Include common preflight tasks
+  include_tasks: "common/preflight.yml"
+  tags:
+    - preflight
+
 - name: Include common config tasks
   include_tasks: "common/config.yml"
   with_items: "{{ unit_config }}"

@@ -97,3 +97,9 @@ suites:
     verifier:
       inspec_tests:
         - path: test/integration/config/config_unit
+  - name: uninstall
+    provisioner:
+      playbook: test/integration/uninstall/default_playbook.yml
+    verifier:
+      inspec_tests:
+        - path: test/integration/uninstall
