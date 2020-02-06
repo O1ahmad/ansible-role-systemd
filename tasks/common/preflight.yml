@@ -9,8 +9,5 @@
   rescue:
     - name: Ensure flush of handlers
       meta: flush_handlers
-  always:
-    - name: End play following uninstallation
-      meta: end_play
   tags:
     - preflight

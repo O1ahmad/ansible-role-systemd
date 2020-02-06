@@ -13,7 +13,6 @@ Ansible Role:vertical_traffic_light:Systemd
   - [Role Variables](#role-variables)
       - [Install](#install)
       - [Config](#config)
-      - [Uninstall](#uninstall)
   - [Dependencies](#dependencies)
   - [Example Playbook](#example-playbook)
   - [License](#license)
@@ -40,7 +39,6 @@ Role Variables
 Variables are available and organized according to the following software & machine provisioning stages:
 * _install_
 * _config_
-* _uninstall_
 
 #### Install
 
@@ -333,15 +331,6 @@ Group and manage system processes in a hierarchical tree for resource management
 The name of the slice encodes the location in the tree. The name consists of a dash-separated series of names, which describes the path to the slice from the root slice. By default, service and scope units are placed in system.slice, virtual machines and containers registered with systemd-machined(1) are found in machine.slice and user sessions handled by systemd-logind(1) in user.slice.
 
 See [systemd.slice(5)](http://man7.org/linux/man-pages/man5/systemd.slice.5.html) for more details.
-
-#### Uninstall
-
-Support for uninstalling and removing artifacts necessary for provisioning allows for users/operators to return a target host to its configured state prior to application of this role. This can be useful for recycling nodes and roles and perhaps providing more graceful/managed transitions between tooling upgrades.
-
-_The following variable(s) can be customized to manage this uninstall process:_
-
-`perform_uninstall: <true | false>` (**default**: `false`)
-- whether to uninstall and remove all managed `systemd` unit configs on a target host (**see**: `handlers/main.yml` for details)
 
 Dependencies
 ------------
