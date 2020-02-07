@@ -94,6 +94,7 @@ suites:
   - name: config_unit
     provisioner:
       playbook: test/integration/config/config_unit/default_playbook.yml
+      idempotency_test: true
     verifier:
       inspec_tests:
         - path: test/integration/config/config_unit

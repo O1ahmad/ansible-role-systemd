@@ -1,5 +1,5 @@
 ---
-- name: "Render unit({{ item.name }}) configuration"
+- name: "Render unit({{ item.name }}.{{ item.type|default(_default_unit_type) }}) configuration"
   become: true
   template:
     src: "systemd.unit.j2"
