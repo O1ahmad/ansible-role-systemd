@@ -4,10 +4,11 @@
   block:
     - name: Broadcast uninstall signal
       command: /bin/true
-      notify:
-        - Uninstall config
-  rescue:
-    - name: Ensure flush of handlers
+      notify: Uninstall config
+  always:
+    - name: Flush handlers
       meta: flush_handlers
+    - name: End play following uninstallation
+      meta: end_play
   tags:
     - preflight
