@@ -1,6 +1,7 @@
 ---
 - name: "Render unit({{ item.name }}.{{ item.type|default(_default_unit_type) }}) configuration"
   become: true
+  when: unit_config is defined and unit_config|length > 0
   template:
     src: "systemd.unit.j2"
     dest: "{{ item.path|default(_default_unit_path) }}/{{ item.name }}.{{ item.type|default(_default_unit_type) }}"

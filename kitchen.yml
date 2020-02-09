@@ -23,10 +23,13 @@ transport:
 provisioner:
   hosts: test-kitchen
   name: ansible_playbook
-  require_chef_for_busser: false
-  require_ruby_for_busser: false
+  require_pip: true
+  ansible_version: 2.9.4
   ansible_verbose: true
   ansible_cfg_path: test/ansible.cfg
+  idempotency_test: true
+  require_chef_for_busser: false
+  require_ruby_for_busser: false
 
 verifier:
   name: inspec
@@ -44,8 +47,6 @@ platforms:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable sshd.service
         - yum -y install python-pip
-    provisioner:
-      require_pip: true
   - name: fedora-31
     driver_config:
       <<: *default_driver_config
@@ -53,8 +54,6 @@ platforms:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable sshd.service
         - yum -y install python-pip
-    provisioner:
-      require_pip: true
   - name: ubuntu-16.04
     driver_config:
       <<: *default_driver_config
@@ -94,13 +93,13 @@ suites:
   - name: config_unit
     provisioner:
       playbook: test/integration/config/config_unit/default_playbook.yml
-      idempotency_test: true
     verifier:
       inspec_tests:
         - path: test/integration/config/config_unit
   - name: uninstall
     provisioner:
       playbook: test/integration/uninstall/default_playbook.yml
+      idempotency_test: false
     verifier:
       inspec_tests:
         - path: test/integration/uninstall
