@@ -19,7 +19,7 @@ Ansible Role:vertical_traffic_light:Systemd
   - [License](#license)
   - [Author Information](#author-information)
 
-Ansible role that installs and configures **Systemd** [units](http://man7.org/linux/man-pages/man5/systemd.unit.5.html): system components and services managed by the Linux Systemd system/service manager.
+Ansible role that installs and configures **Systemd** [units](http://man7.org/linux/man-pages/man5/systemd.unit.5.html): system components and services managed by the Linux `systemd` system/service manager.
 
 ##### Supported Platforms:
 ```
