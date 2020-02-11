@@ -4,8 +4,9 @@ Ansible Role:vertical_traffic_light:Systemd
 =========
 [![Galaxy Role](https://img.shields.io/ansible/role/44466.svg)](https://galaxy.ansible.com/0x0I/systemd)
 [![Downloads](https://img.shields.io/ansible/role/d/44466.svg)](https://galaxy.ansible.com/0x0I/systemd)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/0x0I/ansible-role-systemd?color=yellow)
 [![Build Status](https://travis-ci.org/0x0I/ansible-role-systemd.svg?branch=master)](https://travis-ci.org/0x0I/ansible-role-systemd)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
 
 **Table of Contents**
   - [Supported Platforms](#supported-platforms)
