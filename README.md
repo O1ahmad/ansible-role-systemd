@@ -106,7 +106,7 @@ _The following variables can be customized to control various aspects of install
 
 Configuration of a `systemd` unit is declared in an [ini-style](https://en.wikipedia.org/wiki/INI_file) config file. A `systemd` unit *INI* config is composed of sections: 2 common amongst all unit types (`Unit` and `Install`) and 1 specific to each unit type. These unit configurations can be expressed within the role's `unit_config` hash variable as lists of dicts containing key-value pairs representing the name, type, load path of the unit and a combination of the aforemented section definitions.
 
-Each configuration section definition provides a dict containing a set of key-value pairs for corresponding section options (e.g. the `ExecStart` specification for a system or web service `[Service]` section or the `ListenStream` option for a web `[Socket]` section.
+Each configuration section definition provides a dict containing a set of key-value pairs for corresponding section options (e.g. the `ExecStart` specification for a system or web service `[Service]` section or the `ListenStream` option for a web `[Socket]` section).
 
 `[unit_config: <list-entry>:] Unit | <unit-type e.g. Service, Socket, Device or Mount> | Install: <dict>` (**default**: {})
 - section definitions for a unit configuration
