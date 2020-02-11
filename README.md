@@ -285,7 +285,7 @@ Activates other services when file system objects change or are modified.
 
  ```yaml
   unit_config:
-    - name: Repository Code Coverage Analysis tool
+    - name: Repository Code Coverage Analysis trigger
       type: path
       Unit:
         Description: Activate code coverage analysis on modified git repositories
