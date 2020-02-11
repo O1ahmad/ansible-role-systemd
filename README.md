@@ -387,4 +387,4 @@ MIT
 Author Information
 ------------------
 
-This role was created in 2019 by O1 Labs.
+This role was created in 2019 by O1.IO.
