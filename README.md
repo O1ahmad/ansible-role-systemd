@@ -177,7 +177,7 @@ Controls mount points in the sytem.
 
 **[[Automount](http://man7.org/linux/man-pages/man5/systemd.automount.5.html)]**
 
-Provides automount capabilities, for on-demand mounting of file systems as well as parallelized boot-up.
+Provides automount capabilities for on-demand mounting of file systems as well as parallelized boot-up.
 
 #### Example
 
@@ -285,24 +285,20 @@ Activates other services when file system objects change or are modified.
 
  ```yaml
   unit_config:
-    - name: systemd-ask-password-wall
+    - name: Repository Code Coverage Analysis tool
       type: path
       Unit:
-        Description: Forward Password Requests to Wall Directory Watch
-        Documentation: man:systemd-ask-password-console.service(8)
-        DefaultDependencies: no
-        Conflicts: shutdown.target emergency.service
-        Before: paths.target shutdown.target cryptsetup.target
+        Description: Activate code coverage analysis on modified git repositories
       Path:
-        DirectoryNotEmpty: /run/systemd/ask-password
-        MakeDirectory: yes
+        PathChanged: /path/to/git/repo
+        Unit: code-coverage-analysis
 ```
 
 **[[Scope](http://man7.org/linux/man-pages/man5/systemd.scope.5.html)]**
 
 Manages a set of system or foreign/remote processes.
 
-**Scope units are not configured via unit configuration files, but are only created programmatically using the bus interfaces of systemd.** Unlike service units, scope units manage externally created processes, and do not fork off processes on their own. The main purpose of scope units is grouping worker processes of a system service for organization and for managing resources.
+**Scope units are not configured via unit configuration files, but are only created programmatically using the bus interfaces of systemd.** Unlike service units, scope units manage externally created processes and do not fork off processes on their own. The main purpose of scope units is grouping worker processes of a system service for organization and for managing resources.
 
 #### Example
 
