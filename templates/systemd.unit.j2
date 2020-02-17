@@ -8,10 +8,12 @@
 {% endfor %}
 {% endif %}
 
+{% if config.type|default(_default_unit_type)|title in config %}
 [{{ config.type|default(_default_unit_type)|title }}]
 {% for key, value in config[config.type|default(_default_unit_type)|title].items() %}
 {{ key }}={{ value }}
 {% endfor %}
+{% endif %}
 
 {% if "Install" in config %}
 [Install]
