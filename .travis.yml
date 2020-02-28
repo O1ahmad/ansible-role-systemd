@@ -7,8 +7,9 @@ services:
   - docker
 
 env:
-  global:
-    - ROLE_NAME: systemd
+  - OS_VERSION=centos-7
+  - OS_VERSION=ubuntu-1904
+  - OS_VERSION=debian-9
 
 before_script:
   - sudo pip install ansible-lint yamllint
@@ -16,7 +17,7 @@ before_script:
 script:
   - ansible-lint -c ./test/lint/.ansible-lint .
   - yamllint --config-file ./test/lint/yaml-lint.yml .
-  - bundle exec kitchen test "^config-unit.*(centos|ubuntu-1904|debian-9)" --concurrency
+  - bundle exec kitchen test config-unit-${OS_VERSION} --concurrency
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
