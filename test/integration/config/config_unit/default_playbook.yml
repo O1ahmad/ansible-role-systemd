@@ -37,3 +37,10 @@
               Where: '/tmp/stdin'
             Install:
               WantedBy: 'mount.target'
+          - name: "test-target"
+            type: "target"
+            path: "/etc/systemd/system"
+            Unit:
+              Description: This is an example unit Target
+              Wants: test-service.service test-service.socket tmp-stdin.mount
+              PartOf: test-service.service
