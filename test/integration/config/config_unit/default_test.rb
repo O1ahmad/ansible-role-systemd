@@ -33,3 +33,13 @@ describe file('/run/systemd/system/tmp-stdin.mount') do
   its('content') { should match("What=") }
   its('content') { should match("WantedBy=") }
 end
+
+describe file('/etc/systemd/system/test-target.target') do
+  it { should exist }
+  its('owner') { should eq 'root' }
+  its('group') { should eq 'root' }
+  its('mode') { should cmp '0644' }
+  its('content') { should match("Description=") }
+  its('content') { should match("Wants=") }
+  its('content') { should match("PartOf=") }
+end
