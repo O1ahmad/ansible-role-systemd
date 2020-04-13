@@ -1,18 +1,20 @@
 ---
-- name: "Render unit({{ item.name }}.{{ item.type|default(_default_unit_type) }}) configuration"
+- name: "Render unit({{ unit_item.name }}.{{ unit_item.type|default(_default_unit_type) }}) configuration"
   become: true
   when: unit_config is defined and unit_config|length > 0
   template:
     src: "systemd.unit.j2"
-    dest: "{{ item.path|default(_default_unit_path) }}/{{ item.name }}.{{ item.type|default(_default_unit_type) }}"
+    dest: "{{ unit_item.path|default(_default_unit_path) }}/{{ unit_item.name }}.{{ unit_item.type|default(_default_unit_type) }}"
     owner: "root"
     group: "root"
     mode: 0644
     backup: true
   vars:
-    config: "{{ item }}"
+    config: "{{ unit_item }}"
   register: "restart_units"
   with_items: "{{ unit_config }}"
+  loop_control:
+    loop_var: unit_item
   notify: Reload systemd units
   tags:
     - config
