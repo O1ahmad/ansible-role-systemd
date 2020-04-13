@@ -2,15 +2,19 @@
 - name: Reload systemd units
   become: true
   systemd:
-    name: "{{ item.dest | basename }}"
+    name: "{{ restart_item.dest | basename }}"
     daemon_reload: true
   with_items: "{{ restart_units.results }}"
+  loop_control:
+    loop_var: restart_item
   listen: "Reload systemd units"
 
 - name: Remove managed systemd unit files
   become: true
   file:
-    path: "{{ item.path | default(_default_unit_path) }}/{{ item.name }}.{{ item.type | default(_default_unit_type) }}"
+    path: "{{ uninstall_item.path | default(_default_unit_path) }}/{{ uninstall_item.name }}.{{ uninstall_item.type | default(_default_unit_type) }}"
     state: absent
   listen: Uninstall config
   with_items: "{{ unit_config }}"
+  loop_control:
+    loop_var: uninstall_item
