@@ -28,7 +28,7 @@
     enabled: false
     state: stopped
   when:
-    - unit_item.name in services
+    - unit_item.name in services or (unit_item.type is defined and unit_item.type == "timer")
     - unit_item.state is defined
     - unit_item.state == "absent"
 

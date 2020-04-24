@@ -2,48 +2,9 @@
 - name: Reload systemd units
   become: true
   systemd:
-    name: "{{ restart_item.dest | basename }}"
+    name: "{{ reload_item.dest | basename }}"
     daemon_reload: true
-  with_items: "{{ restart_units.results }}"
+  with_items: "{{ reload_units.results }}"
   loop_control:
-    loop_var: restart_item
+    loop_var: reloadrestart_item
   listen: "Reload systemd units"
-
-- name: Enable systemd units
-  become: true
-  systemd:
-    name: "{{ enable_item.dest | basename }}"
-    daemon_reload: true
-    enabled: "{{ enable_item.unit_item.enabled | default(_default_unit_enabled) }}"
-    state: "{{ enable_item.unit_item.state | default(_default_unit_state) }}"
-  with_items: "{{ restart_units.results }}"
-  loop_control:
-    loop_var: enable_item
-  listen: "Enable systemd units"
-  when:
-    - uninstall_item.state is not defined or uninstall_item.state is defined and uninstall_item.state != "absent"
-
-- name: Uninstall systemd units
-  become: true
-  systemd:
-    name: "{{ enable_item.dest | basename }}"
-    daemon_reload: true
-    enabled: false
-    state: stopped
-  listen: Uninstall config
-  with_items: "{{ unit_config }}"
-  loop_control:
-    loop_var: uninstall_item
-  when:
-    - uninstall_item.state is defined
-    - uninstall_item.state == "absent"
-
-- name: Remove managed systemd unit files
-  become: true
-  file:
-    path: "{{ uninstall_item.path | default(_default_unit_path) }}/{{ uninstall_item.name }}.{{ uninstall_item.type | default(_default_unit_type) }}"
-    state: absent
-  listen: Uninstall config
-  with_items: "{{ unit_config }}"
-  loop_control:
-    loop_var: uninstall_item

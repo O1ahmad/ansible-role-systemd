@@ -11,7 +11,7 @@
     backup: true
   vars:
     config: "{{ unit_item }}"
-  register: "restart_units"
+  register: "reload_units"
   with_items: "{{ unit_config }}"
   loop_control:
     loop_var: unit_item
