@@ -1,0 +1,42 @@
+---
+# receives a structure like
+# unit_item
+#  - name: letsencrypt_certbot
+#    state: absent
+#    Unit:
+#      Description: Certbot Automatic Renewal
+#    Service:
+#      User: '{{ certbot_auto_renew_user }}'
+#      ExecStart: '{{ certbot_script }} renew {{ certbot_auto_renew_options }}'
+#    Install:
+#      WantedBy: multi-user.target
+
+- name: Enable systemd units
+  become: true
+  systemd:
+    name: "{{ unit_item.name }}.{{ unit_item.type|default(_default_unit_type) }}"
+    daemon_reload: true
+    enabled: "{{ unit_item.enabled | default(_default_unit_enabled) }}"
+    state: "{{ unit_item.state | default(_default_unit_state) }}"
+  when: unit_item.state | default(_default_unit_state) != "absent"
+
+- name: Uninstall systemd units
+  become: true
+  systemd:
+    name: "{{ unit_item.name }}.{{ unit_item.type | default(_default_unit_type) }}"
+    daemon_reload: true
+    enabled: false
+    state: stopped
+  when:
+    - unit_item.name in services
+    - unit_item.state is defined
+    - unit_item.state == "absent"
+
+- name: Remove managed systemd unit files
+  become: true
+  file:
+    path: "{{ unit_item.path | default(_default_unit_path) }}/{{ unit_item.name }}.{{ unit_item.type | default(_default_unit_type) }}"
+    state: absent
+  when:
+    - unit_item.state is defined
+    - unit_item.state == "absent"

@@ -79,6 +79,8 @@ _The following variables can be customized to control various aspects of install
  ```yaml
   unit_config:
     - name: apache
+      enabled: yes
+      state: started
       path: /run/systemd/system
       Service:
         ExecStart: /usr/sbin/httpd
@@ -244,6 +246,8 @@ Triggers activation of other units based on timers.
   unit_config:
     - name: dnf-makecache
       type: timer
+      enabled: yes
+      state: started
       Timer:
         OnBootSec: 10min
         OnUnitInactiveSec: 1h
