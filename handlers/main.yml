@@ -6,5 +6,5 @@
     daemon_reload: true
   with_items: "{{ reload_units.results }}"
   loop_control:
-    loop_var: reloadrestart_item
+    loop_var: reload_item
   listen: "Reload systemd units"
