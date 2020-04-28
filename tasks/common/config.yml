@@ -1,5 +1,5 @@
 ---
-- name: "Render unit({{ unit_item.name }}.{{ unit_item.type|default(_default_unit_type) }}) configuration"
+- name: Render unit configuration
   become: true
   when: unit_config is defined and unit_config|length > 0
   template:
