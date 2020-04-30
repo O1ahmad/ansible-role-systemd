@@ -1,6 +1,6 @@
 ---
 - name: Include common config tasks
-  include_tasks: "config.yml"
+  include_tasks: "common/config.yml"
   tags:
     - config
     - systemd
@@ -11,10 +11,10 @@
   tags:
     - config
     - systemd
-    - service
+    - service_facts
 
-- name: Include systemd tasks
-  include_tasks: "systemd.yml"
+- name: Include systemd per unit tasks
+  include_tasks: "common/systemd.yml"
   with_items: '{{ unit_config }}'
   loop_control:
     loop_var: unit_item
