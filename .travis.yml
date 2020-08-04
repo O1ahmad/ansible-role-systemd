@@ -8,7 +8,7 @@ services:
 
 env:
   - OS_VERSION=centos-7
-  - OS_VERSION=ubuntu-1904
+  - OS_VERSION=ubuntu-1910
   - OS_VERSION=debian-9
 
 before_script:
