@@ -66,7 +66,7 @@ platforms:
       provision_command:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable ssh.service
-  - name: ubuntu-19.04
+  - name: ubuntu-19.10
     driver_config:
       <<: *default_driver_config
       provision_command:
