@@ -153,7 +153,7 @@ GEM
       tty-prompt (~> 0.17)
       tty-table (~> 0.10)
     jmespath (1.4.0)
-    json (2.2.0)
+    json (2.3.1)
     json-schema (2.8.1)
       addressable (>= 2.4)
     jwt (2.2.1)
