@@ -1,0 +1,21 @@
+---
+- name: Systemd unit launch integration test playbook
+  hosts: test-kitchen
+  roles:
+    - role: ansible-role-systemd
+      vars:
+        unit_config:
+          - name: "test-service"
+            enabled: "yes"
+            state: "started"
+            Unit:
+              Description: "This is a test service unit"
+              After: network-online.target
+              Wants: network-online.target
+            Service:
+              User: 'kitchen'
+              Group: 'kitchen'
+              ExecStart: '/usr/bin/sleep infinity'
+              ExecReload: '/bin/kill -s HUP $MAINPID'
+            Install:
+              WantedBy: 'multi-user.target'

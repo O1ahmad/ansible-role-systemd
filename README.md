@@ -15,6 +15,7 @@ Ansible Role:vertical_traffic_light:Systemd
   - [Role Variables](#role-variables)
       - [Install](#install)
       - [Config](#config)
+      - [Launch](#launch)
   - [Dependencies](#dependencies)
   - [Example Playbook](#example-playbook)
   - [License](#license)
@@ -41,6 +42,7 @@ Role Variables
 Variables are available and organized according to the following software & machine provisioning stages:
 * _install_
 * _config_
+* _launch_
 
 #### Install
 
@@ -329,6 +331,16 @@ Group and manage system processes in a hierarchical tree for resource management
 The name of the slice encodes the location in the tree. The name consists of a dash-separated series of names, which describes the path to the slice from the root slice. By default, service and scope units are placed in system.slice, virtual machines and containers registered with systemd-machined(1) are found in machine.slice and user sessions handled by systemd-logind(1) in user.slice.
 
 See [systemd.slice(5)](http://man7.org/linux/man-pages/man5/systemd.slice.5.html) for more details.
+
+#### Launch
+
+The following variables can be used to manage certain aspects of a configured unit's launch behavior.
+
+`[unit_config: <config-list-entry>:] enabled:` (**default**: <string> `no`)
+- whether the service should start on boot
+
+`[unit_config: <config-list-entry>:] state:` (**default**: <string> `stopped`)
+- unit activation state
 
 Dependencies
 ------------
