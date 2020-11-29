@@ -9,6 +9,7 @@
   loop_control:
     loop_var: restart_item
   listen: "Reload systemd units"
+  ignore_errors: true
 
 - name: Uninstall systemd units
   become: true
@@ -20,6 +21,7 @@
   loop_control:
     loop_var: unit_item
   listen: Uninstall units
+  ignore_errors: true
 
 - name: Remove managed systemd unit files
   become: true
