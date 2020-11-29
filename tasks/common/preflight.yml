@@ -4,7 +4,7 @@
   block:
     - name: Broadcast uninstall signal
       command: /bin/true
-      notify: Uninstall config
+      notify: Uninstall units
   always:
     - name: Flush handlers
       meta: flush_handlers

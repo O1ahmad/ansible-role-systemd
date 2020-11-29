@@ -8,3 +8,8 @@
   include_tasks: "common/config.yml"
   tags:
     - config
+
+- name: Include common launch tasks
+  include_tasks: "common/launch.yml"
+  tags:
+    - launch
