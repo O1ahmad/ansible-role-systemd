@@ -8,7 +8,5 @@
   always:
     - name: Flush handlers
       meta: flush_handlers
-    - name: End play following uninstallation
-      meta: end_play
   tags:
     - preflight
