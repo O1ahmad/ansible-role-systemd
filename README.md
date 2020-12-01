@@ -46,8 +46,6 @@ Variables are available and organized according to the following software & mach
 
 #### Install
 
-_The following variables can be customized to control various aspects of installation of individual systemd units. It is assumed that the host has a working version of the systemd package. Available versions based on OS distribution can be found [here](http://fr2.rpmfind.net/linux/rpm2html/search.php?query=systemd&submit=Search+...&system=&arch=)_.
-
 `[unit_config: <config-list-entry>:] path:` (**default**: <string> `/etc/systemd/system`)
 - load path to systemd unit configuration.
 
@@ -333,8 +331,6 @@ The name of the slice encodes the location in the tree. The name consists of a d
 See [systemd.slice(5)](http://man7.org/linux/man-pages/man5/systemd.slice.5.html) for more details.
 
 #### Launch
-
-The following variables can be used to manage certain aspects of a configured unit's launch behavior.
 
 `[unit_config: <config-list-entry>:] enabled:` (**default**: <string> `no`)
 - whether the service should start on boot
