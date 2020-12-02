@@ -1,4 +1,8 @@
 ---
+
+- name: Force the reload of the modified systemd units
+  meta: flush_handlers
+
 - name: Activate configured Systemd units
   become: true
   when: unit_config is defined and unit_config|length > 0
