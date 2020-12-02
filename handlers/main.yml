@@ -3,8 +3,11 @@
   become: true
   systemd:
     name: "{{ restart_item.dest | basename }}"
-    state: "restarted"
+    state: "{{ 'restarted' if unit_requested_state == 'started' else unit_requested_state }}"
     daemon_reload: true
+  vars:
+    unit_requested_state: "{{ restart_item.unit_item.state | default(_default_unit_state) }}"
+  when: restart_item.changed
   with_items: "{{ restart_units.results }}"
   loop_control:
     loop_var: restart_item
