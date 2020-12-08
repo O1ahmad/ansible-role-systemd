@@ -1,4 +1,17 @@
 ---
+- name: Create unit configuration path
+  become: true
+  when: unit_item.path is defined
+  file:
+    path: "{{ unit_item.path }}"
+    state: directory
+    mode: 0755
+  with_items: "{{ unit_config }}"
+  loop_control:
+    loop_var: unit_item
+  tags:
+    - config
+
 - name: Render unit configuration
   become: true
   when: unit_config is defined and unit_config|length > 0
