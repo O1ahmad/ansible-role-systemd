@@ -13,6 +13,6 @@
   with_items: "{{ unit_config }}"
   loop_control:
     loop_var: unit_item
-    label: "{{ unit_item.name }}"
+    label: "{{ unit_item.name }}.{{ unit_item.type|default(_default_unit_type) }}"
   tags:
     - launch
