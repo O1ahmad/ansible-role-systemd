@@ -6,9 +6,10 @@
     path: "{{ unit_item.path }}"
     state: directory
     mode: 0755
-  with_items: "{{ unit_config }}"
+  loop: "{{ unit_config }}"
   loop_control:
     loop_var: unit_item
+    label: "{{ unit_item.name }}.{{ unit_item.type|default(_default_unit_type) }}"
   tags:
     - config
 
@@ -25,7 +26,7 @@
   vars:
     config: "{{ unit_item }}"
   register: "restart_units"
-  with_items: "{{ unit_config }}"
+  loop: "{{ unit_config }}"
   loop_control:
     loop_var: unit_item
     label: "{{ unit_item.name }}.{{ unit_item.type|default(_default_unit_type) }}"
