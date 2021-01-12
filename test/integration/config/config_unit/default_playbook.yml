@@ -44,3 +44,10 @@
               Description: This is an example unit Target
               Wants: test-service.service test-service.socket tmp-stdin.mount
               PartOf: test-service.service
+          - name: "test-drop-in"
+            type: "conf"
+            path: "/lib/systemd/system/getty@.service.d"
+            Service:
+              ExecStart:
+                type: override
+                value: -/sbin/agetty -a muru --noclear %I $TERM
