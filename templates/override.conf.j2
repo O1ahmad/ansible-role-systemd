@@ -1,0 +1,24 @@
+{{ ansible_managed | comment }}
+# see: Systemd Unit configuration logic -- http://man7.org/linux/man-pages/man5/systemd.unit.5.html for more details
+
+{% for section in config.keys() if section == section|title  %}
+[{{ section }}]
+{%- for key, value in config[section].items() %}
+
+{% if value is mapping -%}
+
+{% if "type" in value and value["type"]=="override" %}
+{{ key }}=
+{% endif %}
+{% if "value" in value %}
+{{ key }}={{ value["value"] }}
+{%- endif -%}
+
+{%- else -%}
+
+{{ key }}={{ value }}
+
+{%- endif -%}
+
+{% endfor %}
+{% endfor %}
