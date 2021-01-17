@@ -4,23 +4,38 @@
 {% if "Unit" in config %}
 [Unit]
 {% for key, value in config["Unit"].items() %}
-{% if config.type is defined and config.type == "conf" %}
-{{ key }}=
-{% endif %}
+{% if (value is not mapping) and (value is iterable) and (value is not string) %}
+{% for item in value %}
+{{ key }}={{ item }}
+{% endfor %}
+{% else %}
 {{ key }}={{ value }}
+{% endif %}
 {% endfor %}
 {% endif %}
 
 {% if config.type|default(_default_unit_type)|title in config %}
 [{{ config.type|default(_default_unit_type)|title }}]
 {% for key, value in config[config.type|default(_default_unit_type)|title].items() %}
+{% if (value is not mapping) and (value is iterable) and (value is not string) %}
+{% for item in value %}
+{{ key }}={{ item }}
+{% endfor %}
+{% else %}
 {{ key }}={{ value }}
+{% endif %}
 {% endfor %}
 {% endif %}
 
 {% if "Install" in config %}
 [Install]
 {% for key, value in config["Install"].items() %}
+{% if (value is not mapping) and (value is iterable) and (value is not string) %}
+{% for item in value %}
+{{ key }}={{ item }}
+{% endfor %}
+{% else %}
 {{ key }}={{ value }}
+{% endif %}
 {% endfor %}
 {% endif %}
