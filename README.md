@@ -343,8 +343,8 @@ Provides override capabilities for units.
       path: "/lib/systemd/system/getty@.service.d"
       Service:
         ExecStart:
-          type: override
-          value: -/sbin/agetty -a muru --noclear %I $TERM
+          - ""
+          - "-/sbin/agetty -a muru --noclear %I $TERM"
         EnvironmentFile=/path/to/some/file
 ```
 

@@ -3,22 +3,13 @@
 
 {% for section in config.keys() if section == section|title  %}
 [{{ section }}]
-{%- for key, value in config[section].items() %}
-
-{% if value is mapping -%}
-
-{% if "type" in value and value["type"]=="override" %}
-{{ key }}=
-{% endif %}
-{% if "value" in value %}
-{{ key }}={{ value["value"] }}
-{%- endif -%}
-
-{%- else -%}
-
+{% for key, value in config[section].items() %}
+{% if (value is not mapping) and (value is iterable) and (value is not string) %}
+{% for item in value %}
+{{ key }}={{ item }}
+{% endfor %}
+{% else %}
 {{ key }}={{ value }}
-
-{%- endif -%}
-
+{% endif %}
 {% endfor %}
 {% endfor %}
