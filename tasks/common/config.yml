@@ -15,7 +15,8 @@
 
 - name: Render unit configuration
   become: true
-  when: unit_config is defined and unit_config|length > 0
+  when: unit_config is defined and unit_config|length > 0 and
+    unit_item.type|default(_default_unit_type) != "conf"
   template:
     src: "systemd.unit.j2"
     dest: "{{ unit_item.path|default(_default_unit_path) }}/{{ unit_item.name }}.{{ unit_item.type|default(_default_unit_type) }}"
@@ -31,5 +32,27 @@
     loop_var: unit_item
     label: "{{ unit_item.name }}.{{ unit_item.type|default(_default_unit_type) }}"
   notify: Reload systemd units
+  tags:
+    - config
+
+- name: Render override unit configuration
+  become: true
+  when: unit_config is defined and unit_config|length > 0 and
+    unit_item.type|default(_default_unit_type) == "conf"
+  template:
+    src: "override.conf.j2"
+    dest: "{{ unit_item.path|default(_default_unit_path) }}/{{ unit_item.name }}.{{ unit_item.type|default(_default_unit_type) }}"
+    owner: "root"
+    group: "root"
+    mode: 0644
+    backup: true
+  vars:
+    config: "{{ unit_item }}"
+  register: "restart_override_units"
+  loop: "{{ unit_config }}"
+  loop_control:
+    loop_var: unit_item
+    label: "{{ unit_item.name }}.{{ unit_item.type|default(_default_unit_type) }}"
+  notify: Reload systemd daemon
   tags:
     - config

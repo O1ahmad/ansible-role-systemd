@@ -1,0 +1,15 @@
+{{ ansible_managed | comment }}
+# see: Systemd Unit configuration logic -- http://man7.org/linux/man-pages/man5/systemd.unit.5.html for more details
+
+{% for section in config.keys() if section == section|title  %}
+[{{ section }}]
+{% for key, value in config[section].items() %}
+{% if (value is not mapping) and (value is iterable) and (value is not string) %}
+{% for item in value %}
+{{ key }}={{ item }}
+{% endfor %}
+{% else %}
+{{ key }}={{ value }}
+{% endif %}
+{% endfor %}
+{% endfor %}
