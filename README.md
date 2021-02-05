@@ -330,6 +330,24 @@ The name of the slice encodes the location in the tree. The name consists of a d
 
 See [systemd.slice(5)](http://man7.org/linux/man-pages/man5/systemd.slice.5.html) for more details.
 
+**[[Drop-in](http://man7.org/linux/man-pages/man1/systemd.1.html)]**
+
+Provides override capabilities for units.
+
+#### Example
+
+ ```yaml
+  unit_config:
+    - name: override.conf
+      type: conf
+      path: "/lib/systemd/system/getty@.service.d"
+      Service:
+        ExecStart:
+          - ""
+          - "-/sbin/agetty -a muru --noclear %I $TERM"
+        EnvironmentFile=/path/to/some/file
+```
+
 #### Launch
 
 `[unit_config: <config-list-entry>:] enabled:` (**default**: <string> `no`)

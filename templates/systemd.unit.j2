@@ -4,9 +4,6 @@
 {% if "Unit" in config %}
 [Unit]
 {% for key, value in config["Unit"].items() %}
-{% if config.type is defined and config.type == "conf" %}
-{{ key }}=
-{% endif %}
 {{ key }}={{ value }}
 {% endfor %}
 {% endif %}
