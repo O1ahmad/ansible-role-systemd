@@ -8,7 +8,6 @@ services:
   - docker
 
 env:
-  - OS_VERSION=centos-7
   - OS_VERSION=fedora-32
   - OS_VERSION=ubuntu-1804
   - OS_VERSION=debian-9

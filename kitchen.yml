@@ -38,6 +38,9 @@ platforms:
   - name: centos-7
     driver_config:
       <<: *default_driver_config
+      provision_command:
+        - yum -y install epel-release && yum makecache
+        - yum -y install python-pip
     provisioner:
       ansible_cfg_path: test/ansible-legacy.cfg
   - name: fedora-32
