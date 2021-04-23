@@ -24,7 +24,7 @@ provisioner:
   hosts: test-kitchen
   name: ansible_playbook
   require_pip: true
-  ansible_version: 2.9.4
+  ansible_version: 2.9.9
   ansible_verbose: true
   ansible_cfg_path: test/ansible.cfg
   idempotency_test: true

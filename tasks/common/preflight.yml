@@ -1,6 +1,6 @@
 ---
 - name: Check for uninstall signal
-  when: perform_uninstall
+  when: perform_uninstall|bool
   block:
     - name: Broadcast uninstall signal
       command: /bin/true
