@@ -4,9 +4,12 @@ driver:
 
 # Special config for enabling systemd init
 default_driver_config: &default_driver_config
+  privileged: true
   run_command: /sbin/init
   cap_add:
     - SYS_ADMIN
+  security_opt:
+    - seccomp:unconfined
   run_options:
     env: container=docker
   volume:
@@ -19,6 +22,7 @@ transport:
   # TODO: remove with better solution than workaround:
   # https://github.com/test-kitchen/test-kitchen/issues/1035
   max_ssh_sessions: 6
+  name: docker
 
 provisioner:
   hosts: test-kitchen
@@ -43,26 +47,33 @@ platforms:
         - yum -y install python-pip
     provisioner:
       ansible_cfg_path: test/ansible-legacy.cfg
+  - name: centos-8
+    driver_config:
+      <<: *default_driver_config
+    provisioner:
+      ansible_cfg_path: test/ansible-legacy.cfg
   - name: fedora-32
     driver_config:
       <<: *default_driver_config
       provision_command:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable sshd.service
-        - yum -y install python-pip
+        - dnf install -y python3-pip
+    provisioner:
+      require_pip: false
+      require_pip3: true
+      ansible_binary_path: /usr/local/bin
   - name: fedora-33
     driver_config:
       <<: *default_driver_config
       provision_command:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable sshd.service
-        - yum -y install python-pip
-  - name: ubuntu-16.04
-    driver_config:
-      <<: *default_driver_config
-      provision_command:
-        - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
-        - systemctl enable ssh.service
+        - dnf install -y python3-pip
+    provisioner:
+      require_pip: false
+      require_pip3: true
+      ansible_binary_path: /usr/local/bin
   - name: ubuntu-18.04
     driver_config:
       <<: *default_driver_config
@@ -75,6 +86,11 @@ platforms:
       provision_command:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable ssh.service
+        - apt install -y python3-pip
+    provisioner:
+      require_pip: false
+      require_pip3: true
+      ansible_binary_path: /usr/local/bin
   - name: debian-8
     driver_config:
       <<: *default_driver_config
