@@ -50,11 +50,6 @@ platforms:
   - name: centos-8
     driver_config:
       <<: *default_driver_config
-    provisioner:
-      ansible_cfg_path: test/ansible-legacy.cfg
-  - name: fedora-32
-    driver_config:
-      <<: *default_driver_config
       provision_command:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable sshd.service
@@ -63,6 +58,12 @@ platforms:
       require_pip: false
       require_pip3: true
       ansible_binary_path: /usr/local/bin
+  - name: fedora-32
+    driver_config:
+      <<: *default_driver_config
+      provision_command:
+        - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+        - systemctl enable sshd.service
   - name: fedora-33
     driver_config:
       <<: *default_driver_config

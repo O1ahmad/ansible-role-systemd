@@ -8,8 +8,13 @@ services:
   - docker
 
 env:
+  - OS_VERSION=centos-7
+  - OS_VERSION=centos-8
   - OS_VERSION=fedora-32
+  - OS_VERSION=fedora-33
   - OS_VERSION=ubuntu-1804
+  - OS_VERSION=ubuntu-2004
+  - OS_VERSION=debian-8
   - OS_VERSION=debian-9
 
 before_script:
