@@ -45,7 +45,7 @@
     owner: "root"
     group: "root"
     mode: 0644
-    backup: backup: "{{ systemd_backup_files | default(_default_systemd_backup_files) }}"
+    backup: "{{ systemd_backup_files | default(_default_systemd_backup_files) }}"
   vars:
     config: "{{ unit_item }}"
   register: "restart_override_units"
