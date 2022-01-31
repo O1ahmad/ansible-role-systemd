@@ -2,6 +2,7 @@
 _default_unit_path: "/etc/systemd/system"
 _default_unit_type: "service"
 _default_unit_enabled: "no"
+_default_systemd_backup_files: true
 _default_unit_state: "stopped"
 
 unit_config: []
