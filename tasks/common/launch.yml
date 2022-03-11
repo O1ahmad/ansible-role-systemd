@@ -6,9 +6,11 @@
 - name: Activate configured Systemd units
   become: true
   when: unit_config is defined and unit_config|length > 0 and (unit_item.type is not defined or unit_item.type != 'conf')
+  vars:
+    unit_item_manage_state: "{{ true if unit_item.manage_state is not defined or unit_item.manage_state else false }}"
   systemd:
     name: "{{ unit_item.name }}.{{ unit_item.type | default(_default_unit_type) }}"
-    state: "{{ unit_item.state | default(_default_unit_state) }}"
+    state: "{{ unit_item.state | default(_default_unit_state) if unit_item_manage_state else omit }}"
     enabled: "{{ unit_item.enabled | default(_default_unit_enabled) }}"
   loop: "{{ unit_config }}"
   loop_control:
