@@ -9,7 +9,7 @@
     unit_requested_state: "{{ restart_item.unit_item.state | default(_default_unit_state) }}"
   when:
     - restart_item.changed and (restart_item.unit_item.reload_on_change is not defined or restart_item.unit_item.reload_on_change) and
-      (not restart_item.unit_item.name | search("^[^@]+@$"))
+      (restart_item.unit_item.name is not search("^[^@]+@$"))
   loop: "{{ restart_units.results }}"
   loop_control:
     loop_var: restart_item
