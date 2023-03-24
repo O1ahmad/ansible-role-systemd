@@ -14,7 +14,7 @@
     loop_var: restart_item
     label: "{{ restart_item.unit_item.name }}.{{ restart_item.unit_item.type | default(_default_unit_type) }}"
   listen: "Reload systemd units"
-  ignore_errors: true
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Reload systemd daemon
   become: true

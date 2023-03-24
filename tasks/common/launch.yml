@@ -16,3 +16,4 @@
     label: "{{ unit_item.name }}.{{ unit_item.type|default(_default_unit_type) }}"
   tags:
     - launch
+  ignore_errors: "{{ ansible_check_mode }}"
