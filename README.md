@@ -374,7 +374,7 @@ service/socket/mount pair:
 ```
 - hosts: webservers
   roles:
-  - role: 0x01.systemd
+  - role: 0x0i.systemd
     vars:
       unit_config:
       - name: "my-service"

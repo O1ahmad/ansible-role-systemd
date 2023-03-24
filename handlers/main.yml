@@ -8,13 +8,14 @@
   vars:
     unit_requested_state: "{{ restart_item.unit_item.state | default(_default_unit_state) }}"
   when:
-    - restart_item.changed and (restart_item.unit_item.reload_on_change is not defined or restart_item.unit_item.reload_on_change)
+    - restart_item.changed and (restart_item.unit_item.reload_on_change is not defined or restart_item.unit_item.reload_on_change) and
+      (restart_item.unit_item.name is not search("^[^@]+@$"))
   loop: "{{ restart_units.results }}"
   loop_control:
     loop_var: restart_item
     label: "{{ restart_item.unit_item.name }}.{{ restart_item.unit_item.type | default(_default_unit_type) }}"
   listen: "Reload systemd units"
-  ignore_errors: true
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Reload systemd daemon
   become: true

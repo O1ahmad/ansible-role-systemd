@@ -5,7 +5,8 @@
 
 - name: Activate configured Systemd units
   become: true
-  when: unit_config is defined and unit_config|length > 0 and (unit_item.type is not defined or unit_item.type != 'conf')
+  when: unit_config is defined and unit_config|length > 0 and (unit_item.type is not defined or unit_item.type != 'conf') and
+        (unit_item.name is not search("^[^@]+@$"))
   vars:
     unit_item_manage_state: "{{ true if unit_item.manage_state is not defined or unit_item.manage_state else false }}"
   systemd:
@@ -18,3 +19,4 @@
     label: "{{ unit_item.name }}.{{ unit_item.type|default(_default_unit_type) }}"
   tags:
     - launch
+  ignore_errors: "{{ ansible_check_mode }}"
