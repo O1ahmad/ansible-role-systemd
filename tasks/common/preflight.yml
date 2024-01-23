@@ -5,6 +5,7 @@
     - name: Broadcast uninstall signal
       command: /bin/true
       notify: Uninstall units
+      changed_when: false
   always:
     - name: Flush handlers
       meta: flush_handlers
