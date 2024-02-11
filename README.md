@@ -1,7 +1,7 @@
 <p><img src="https://code.benco.io/icon-collection/logos/ansible.svg" alt="ansible logo" title="ansible" align="left" height="60" /></p>
 <p><img src="https://www.servethehome.com/wp-content/uploads/2017/11/Redhat-logo.jpg" alt="redhat logo" title="redhat" align="right" height="60" /></p>
 
-Ansible Role:vertical_traffic_light:Systemd
+Ansible Role :vertical_traffic_light: Systemd
 =========
 [![Galaxy Role](https://img.shields.io/ansible/role/44466.svg)](https://galaxy.ansible.com/0x0I/systemd)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/0x0I/ansible-role-systemd?color=yellow)
